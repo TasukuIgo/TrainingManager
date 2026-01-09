@@ -1,0 +1,14 @@
+<h1>マイスケジュール</h1>
+
+<% @plans.each do |plan| %>
+  <h2><%= plan.name %></h2>
+
+  <ul>
+    <% plan.training_schedules.each do |schedule| %>
+      <li>
+        <%= schedule.date.strftime("%m/%d") %>
+        <%= schedule.training.title %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

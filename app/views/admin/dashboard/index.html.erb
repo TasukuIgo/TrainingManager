@@ -1,3 +1,12 @@
-<!-- app/views/admin/dashboard/index.html.erb -->
 <h1>Admin Dashboard</h1>
-<p>管理者用ダッシュボード</p>
+
+<ul>
+  <!-- 研修（Training） -->
+  <li><%= link_to "登録済み研修一覧", admin_trainings_path %></li>
+  <li><%= link_to "研修作成", new_admin_training_path %></li>
+  <li><%= link_to "日付設定済み研修一覧", admin_training_schedules_path %></li>
+
+  <!-- プラン（Plan） -->
+  <li><%= link_to "プラン一覧", admin_plans_path %></li>
+  <li><%= link_to "プラン作成", new_admin_plan_path %></li>
+</ul>

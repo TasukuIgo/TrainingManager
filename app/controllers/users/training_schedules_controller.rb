@@ -1,6 +1,7 @@
 class Users::TrainingSchedulesController < ApplicationController
-  def index
-  end
+def index
+  @schedules = TrainingSchedule.includes(:training)
+end
 
   def show
   end

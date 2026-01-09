@@ -1,0 +1,10 @@
+<h1>研修カレンダー</h1>
+
+<ul>
+  <% @schedules.each do |schedule| %>
+    <li>
+      <%= schedule.date.strftime("%m/%d") %>
+      <%= schedule.training.title %>
+    </li>
+  <% end %>
+</ul>

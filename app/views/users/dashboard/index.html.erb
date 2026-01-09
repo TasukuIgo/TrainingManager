@@ -1,3 +1,7 @@
-<!-- app/views/users/dashboard/index.html.erb -->
 <h1>User Dashboard</h1>
-<p>ユーザー用ダッシュボード</p>
+
+<ul>
+  <li><%= link_to "マイスケジュール", users_training_schedules_path %></li>
+  <li><%= link_to "受講/開催予定研修一覧", users_training_schedules_path %></li>
+  <li><%= link_to "参加済み研修", users_training_histories_path %></li>
+</ul>
