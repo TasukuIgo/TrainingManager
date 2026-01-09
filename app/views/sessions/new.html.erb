@@ -1,0 +1,16 @@
+<!-- app/views/sessions/new.html.erb -->
+<h1>仮ログイン</h1>
+
+<%= form_with url: login_path, method: :post do %>
+  <div>
+    <%= radio_button_tag :role, "user", true %>
+    一般ユーザー
+  </div>
+
+  <div>
+    <%= radio_button_tag :role, "admin" %>
+    管理者
+  </div>
+
+  <%= submit_tag "ログイン" %>
+<% end %>
