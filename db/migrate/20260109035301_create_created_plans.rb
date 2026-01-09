@@ -1,4 +1,3 @@
-# PlanにどのTraning_scheduleが入るか
 class CreateCreatedPlans < ActiveRecord::Migration[8.1]
   def change
     create_table :created_plans do |t|
