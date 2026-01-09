@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .      # Rails アプリがあるディレクトリ
+      dockerfile: Dockerfile
+    command: bash -c "bundle install && rails s -b 0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: training_manager_development
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
