@@ -1,0 +1,2 @@
+module Users::PlanHelper
+end

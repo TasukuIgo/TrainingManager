@@ -1,0 +1,2 @@
+module Users::TrainingHistoryHelper
+end
