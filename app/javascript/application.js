@@ -1,3 +1,3 @@
-import "@rails/ujs"      // ← ここを追加
+import "@rails/ujs"
 import "@hotwired/turbo-rails"
 import "controllers"
