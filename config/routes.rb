@@ -31,6 +31,5 @@ Rails.application.routes.draw do
     resources :users_list, only: [:index, :show]
   end
 
-  get "up" => "rails/health#show", as: :rails_health_check
 end
 

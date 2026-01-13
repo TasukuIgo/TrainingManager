@@ -1,12 +1,12 @@
 <h1>Admin Dashboard</h1>
 
 <ul>
-  <!-- 研修（Training） -->
+  <h3> 研修（Training） </h3>
   <li><%= link_to "登録済み研修一覧", admin_trainings_path %></li>
   <li><%= link_to "研修作成", new_admin_training_path %></li>
-  <li><%= link_to "日付設定済み研修一覧", admin_training_schedules_path %></li>
+  <li><%= link_to "カレンダー", admin_training_schedules_path %></li>
 
-  <!-- プラン（Plan） -->
+  <h3> プラン（Plan） </h3>
   <li><%= link_to "プラン一覧", admin_plans_path %></li>
   <li><%= link_to "プラン作成", new_admin_plan_path %></li>
 </ul>
