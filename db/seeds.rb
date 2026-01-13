@@ -3,12 +3,14 @@ puts "🌱 seed start"
 # =========================
 # Users
 # =========================
-admin = User.find_or_create_by!(name: "管理者 太郎") do |u|
-  u.role = "admin"
+admin_user = User.find_or_create_by!(name: 'admin') do |user|
+  user.password = 'password'
+  user.role = 'admin'
 end
 
-user = User.find_or_create_by!(name: "一般 花子") do |u|
-  u.role = "user"
+normal_user = User.find_or_create_by!(name: 'user') do |user|
+  user.password = 'password'
+  user.role = 'user'
 end
 
 # =========================
@@ -57,57 +59,30 @@ end
 # =========================
 # Created Plans
 # =========================
-CreatedPlan.find_or_create_by!(
-  plan: plan1,
-  training_schedule: schedule1
-)
-
-CreatedPlan.find_or_create_by!(
-  plan: plan2,
-  training_schedule: schedule2
-)
+CreatedPlan.find_or_create_by!(plan: plan1, training_schedule: schedule1)
+CreatedPlan.find_or_create_by!(plan: plan2, training_schedule: schedule2)
 
 # =========================
 # Plan Participations
 # =========================
-PlanParticipation.find_or_create_by!(
-  plan: plan1,
-  user: user
-)
-
-PlanParticipation.find_or_create_by!(
-  plan: plan2,
-  user: admin
-)
+PlanParticipation.find_or_create_by!(plan: plan1, user: normal_user)
+PlanParticipation.find_or_create_by!(plan: plan2, user: admin_user)
 
 # =========================
 # Training Participations
 # =========================
-TrainingParticipation.find_or_create_by!(
-  training_schedule: schedule1,
-  user: user
-) do |tp|
+TrainingParticipation.find_or_create_by!(training_schedule: schedule1, user: normal_user) do |tp|
   tp.status = "completed"
 end
 
-TrainingParticipation.find_or_create_by!(
-  training_schedule: schedule2,
-  user: admin
-) do |tp|
+TrainingParticipation.find_or_create_by!(training_schedule: schedule2, user: admin_user) do |tp|
   tp.status = "scheduled"
 end
 
 # =========================
 # Instructors
 # =========================
-Instructor.find_or_create_by!(
-  training_schedule: schedule1,
-  user: admin
-)
-
-Instructor.find_or_create_by!(
-  training_schedule: schedule2,
-  user: admin
-)
+Instructor.find_or_create_by!(training_schedule: schedule1, user: admin_user)
+Instructor.find_or_create_by!(training_schedule: schedule2, user: admin_user)
 
 puts "🌱 seed complete"

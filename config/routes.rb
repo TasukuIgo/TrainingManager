@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   # =====================
   root "sessions#new"
 
-  get    "/login",  to: "sessions#new"
+  get    "/login",  to: "sessions#new",    as: :login
   post   "/login",  to: "sessions#create"
-  delete "/logout", to: "sessions#destroy"
+  get "/logout", to: "sessions#destroy"  # テスト用、一時的
+  # delete "/logout", to: "sessions#destroy" JSエラーのためGETリクエストになる。こちらは機能していない。
 
   # =====================
   # Users（一般社員）
@@ -26,10 +27,8 @@ Rails.application.routes.draw do
     root "dashboard#index"
 
     resources :trainings
-    resources :training_schedules, only:[:index]
+    resources :training_schedules, only: [:index]
     resources :plans
     resources :users_list, only: [:index, :show]
   end
-
 end
-

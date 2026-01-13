@@ -15,11 +15,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  username: postgres
-  password: password
-  host: db # ← ここが重要、docker-compose.yml の db サービス名と一致させる
-  port: 5432
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DATABASE_HOST") %>
+  username: <%= ENV.fetch("DATABASE_USER") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") %>
+  pool: 5
 
 development:
   <<: *default

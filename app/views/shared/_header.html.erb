@@ -1,3 +1,10 @@
 <header class="app-header">
   <%= link_to 'ダッシュボードに戻る', dashboard_path_by_role %>
+
+  <% if current_user %>
+    <%= link_to "ログアウト", logout_path, method: :delete, data: { turbo: false } %>
+
+
+  <% end %>
+
 </header>
