@@ -1,4 +1,11 @@
 <head>
+<h1>研修スケジュール</h1>
+
+<!-- 研修をセットするボタン -->
+<%= link_to "研修をセットする", new_admin_training_schedule_path, class: "btn btn-primary" %>
+
+<div id="calendar" data-controller="calendar"></div>
+
 <!-- Rails UJS -->
 <script src="https://cdn.jsdelivr.net/npm/@rails/ujs@7.1.2/dist/rails-ujs.min.js"></script>
 <script>

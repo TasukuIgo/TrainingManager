@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     root "dashboard#index"
 
     resources :trainings
-    resources :training_schedules, only: [:index, :show]
+    resources :training_schedules
     resources :plans
     resources :users_list, only: [:index, :show]
   end

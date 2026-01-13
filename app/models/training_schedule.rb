@@ -1,5 +1,5 @@
 class TrainingSchedule < ApplicationRecord
   belongs_to :training
   belongs_to :room
-  has_many :instructors
+  belongs_to :instructor, class_name: "User", optional: true 
 end
