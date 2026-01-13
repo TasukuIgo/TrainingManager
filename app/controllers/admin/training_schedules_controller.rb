@@ -7,21 +7,27 @@ class Admin::TrainingSchedulesController < ApplicationController
     @instructors = User.instructors  # 講師一覧を取得する場合
   end
 
-  def create
+def create
+  Time.use_zone("Tokyo") do
     @training_schedule = TrainingSchedule.new(training_schedule_params)
-    if @training_schedule.save
-      redirect_to admin_training_schedules_path, notice: "研修スケジュールを作成しました"
-    else
-      render :new
-    end
+    @training_schedule.date = @training_schedule.date.in_time_zone("Tokyo") if @training_schedule.date
   end
+
+  if @training_schedule.save
+    redirect_to admin_training_schedules_path, notice: "研修スケジュールを作成しました"
+  else
+    render :new
+  end
+end
+
+
 
   def index
     @schedules = TrainingSchedule.includes(:training).all.map do |ts|
       {
         id: ts.id,
         title: ts.training&.title || "タイトル未設定",
-        start: ts.date
+                start: ts.date&.in_time_zone("Tokyo")&.strftime("%Y-%m-%dT%H:%M:%S")
       }
     end
 

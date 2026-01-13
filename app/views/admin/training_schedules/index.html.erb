@@ -25,16 +25,17 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      events: '/admin/training_schedules.json',
-      eventClick: function(info) {
-        window.location.href = `/admin/training_schedules/${info.event.id}`;
-      }
-    });
-    calendar.render();
+  var calendarEl = document.getElementById('calendar');
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth', // ← 月表示
+    events: '/admin/training_schedules.json',
+    eventClick: function(info) {
+      window.location.href = `/admin/training_schedules/${info.event.id}`;
+    }
   });
+  calendar.render();
+});
+
 </script>
 
 </body>

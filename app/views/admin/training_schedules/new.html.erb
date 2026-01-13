@@ -8,7 +8,7 @@
 
   <div>
     <%= f.label :date, "日時" %>
-    <%= f.datetime_select :date, { include_seconds: false } %> 
+    <%= f.datetime_select :date, { include_seconds: false } %> 開始
   </div>
 
   <div>
@@ -18,7 +18,7 @@
 
   <div>
     <%= f.label :instructor_id, "講師" %>
-    <%= f.collection_select :instructor_id, @instructors, :id, :name %>
+    <%= f.collection_select :instructor_id, @instructors, :id, :name, prompt: "未定" %>
   </div>
 
 
