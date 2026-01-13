@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :instrucotrs
   has_secure_password
 
   def admin?

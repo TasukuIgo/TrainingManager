@@ -15,6 +15,6 @@ class Admin::TrainingSchedulesController < ApplicationController
   end
 
   def show
-    @training_schedule = TrainingSchedule.find(params[:id])
+    @training_schedule = TrainingSchedule.includes(:training, :room, instructors: :user).find(params[:id])
   end
 end
