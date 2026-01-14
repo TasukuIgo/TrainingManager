@@ -4,11 +4,10 @@ pin "@hotwired/stimulus", to: "stimulus.min.js"
 pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 
-# Rails UJS
-pin "@rails/ujs", to: "https://cdn.jsdelivr.net/npm/@rails/ujs@7.1.2/dist/rails-ujs.js"
+pin "preact" # @10.12.1
+pin "preact/compat", to: "preact--compat.js" # @10.12.1
+pin "preact/hooks", to: "preact--hooks.js" # @10.12.1
 
-# FullCalendar
-pin "@fullcalendar/core", to: "https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"
-pin "@fullcalendar/daygrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"
-pin "@fullcalendar/timegrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"
-pin "@fullcalendar/interaction", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"
+pin "@fullcalendar/core", to: "fullcalendar-core.js"
+pin "@fullcalendar/daygrid", to: "fullcalendar-daygrid.js"
+pin "@fullcalendar/interaction", to: "fullcalendar-interaction.js"

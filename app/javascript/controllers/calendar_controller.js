@@ -1,17 +1,29 @@
 import { Controller } from "@hotwired/stimulus"
 import { Calendar } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
-import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
 
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    events: '/admin/training_schedules.json',
-    eventClick: function(info) {
-      window.location.href = `/admin/training_schedules/${info.event.id}`;
-    }
-  });
-  calendar.render();
-});
+export default class extends Controller {
+  connect() {
+    this.calendar = new Calendar(this.element, {
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: "dayGridMonth",
+      locale: "ja",
+      events: "/admin/training_schedules.json",
+      eventClick: (info) => {
+        window.location.href = `/admin/training_schedules/${info.event.id}`
+      },
+      eventTimeFormat: {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }
+    })
+
+    this.calendar.render()
+  }
+
+  disconnect() {
+    this.calendar?.destroy()
+  }
+}
