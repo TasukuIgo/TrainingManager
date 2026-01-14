@@ -1,0 +1,28 @@
+<h1>新しい研修スケジュール</h1>
+
+<%= form_with model: @training_schedule, url: admin_training_schedules_path, local: true do |f| %>
+  <div>
+    <%= f.label :training_id, "研修" %>
+    <%= f.collection_select :training_id, @trainings, :id, :title %>
+  </div>
+
+  <div>
+    <%= f.label :date, "日時" %>
+    <%= f.datetime_select :date, { include_seconds: false } %> 開始
+  </div>
+
+  <div>
+    <%= f.label :room_id, "会場" %>
+    <%= f.collection_select :room_id, @rooms, :id, :name %>
+  </div>
+
+  <div>
+    <%= f.label :instructor_id, "講師" %>
+    <%= f.collection_select :instructor_id, @instructors, :id, :name, prompt: "未定" %>
+  </div>
+
+
+  <div>
+    <%= f.submit "作成" %>
+  </div>
+<% end %>

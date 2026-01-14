@@ -1,0 +1,10 @@
+<h1>参加済み研修</h1>
+
+<ul>
+  <% @histories.each do |history| %>
+    <li>
+      <%= history.training_schedule.training.title %>
+      （<%= history.training_schedule.date.strftime("%m/%d") %>）
+    </li>
+  <% end %>
+</ul>

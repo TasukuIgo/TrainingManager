@@ -1,0 +1,44 @@
+<h1>作成済みプラン一覧</h1>
+
+<% if @plans.present? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>プラン名</th>
+        <th>受講者</th>
+        <th>研修期間</th>
+        <th>研修数</th>
+        <th>研修内容</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @plans.each do |plan| %>
+        <tr>
+          <td><%= plan.name %></td>
+          <td><%= plan.participants %></td>
+          <td>
+            <% if plan.training_schedules.any? %>
+              <%= plan.training_schedules.minimum(:date).strftime("%m/%d") %>
+               -
+              <%= plan.training_schedules.maximum(:date).strftime("%m/%d") %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td><%= plan.training_schedules.count %></td>
+          <td>
+            <ul>
+              <% plan.training_schedules.each do |schedule| %>
+                <li>
+                  <%= schedule.date.strftime("%m/%d") %> - <%= schedule.training.title %>
+                </li>
+              <% end %>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>プランはまだ作成されていません。</p>
+<% end %>

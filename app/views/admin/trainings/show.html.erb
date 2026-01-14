@@ -1,0 +1,16 @@
+<h1>研修詳細</h1>
+
+<p>
+  <strong>タイトル：</strong>
+  <%= @training.title %>
+</p>
+
+<p>
+  <strong>説明：</strong><br>
+  <%= simple_format(@training.description) %>
+</p>
+
+<hr>
+
+<%= link_to "一覧へ戻る", admin_trainings_path %>
+<%= link_to "編集する", edit_admin_training_path(@training) %>

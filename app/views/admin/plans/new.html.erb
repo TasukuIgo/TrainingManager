@@ -1,0 +1,46 @@
+<h1>プラン作成</h1>
+
+<%= form_with model: @plan, url: admin_plans_path do |f| %>
+  <div>
+    <%= f.label :name, "プラン名" %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "説明" %><br>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :participants, "受講対象者" %><br>
+    <%= f.text_field :participants %>
+  </div>
+
+  <h2>研修スケジュールを選択</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>選択</th>
+        <th>研修タイトル</th>
+        <th>日付</th>
+        <th>部屋</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @training_schedules.each do |ts| %>
+        <tr>
+          <td>
+            <%= f.check_box :training_schedule_ids, { multiple: true }, ts.id, nil %>
+          </td>
+          <td><%= ts.training.title %></td>
+          <td><%= ts.date.strftime("%Y/%m/%d") %></td>
+          <td><%= ts.room.name if ts.room %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= f.submit "作成", class: "btn btn-primary" %>
+  </div>
+<% end %>

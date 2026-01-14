@@ -1,4 +1,3 @@
-# 日付、会場、講師セット後
 class CreateTrainingSchedules < ActiveRecord::Migration[8.1]
   def change
     create_table :training_schedules do |t|
