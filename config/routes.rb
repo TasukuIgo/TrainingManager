@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
     resources :trainings
     resources :training_schedules
-    resources :plans
+    resources :plans, only: [:new, :create, :index, :show]
     resources :users_list, only: [:index, :show]
   end
 end
