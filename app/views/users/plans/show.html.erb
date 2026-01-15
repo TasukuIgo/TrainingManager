@@ -1,2 +1,36 @@
-<h1>Users::Plan#show</h1>
-<p>Find me in app/views/users/plan/show.html.erb</p>
+<h2 class="mb-3"><%= @schedule.training.title %></h2>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p><strong>内容:</strong> <%= @schedule.training.description %></p>
+
+    <p>
+      <strong>日時:</strong>
+      <%= @schedule.start_time.strftime("%Y/%m/%d %H:%M") %>
+      <% if @schedule.end_time.present? %>
+        ～ <%= @schedule.end_time.strftime("%H:%M") %>
+      <% end %>
+    </p>
+
+    <p><strong>会場:</strong> <%= @schedule.room&.name || "未定" %></p>
+  </div>
+</div>
+
+<h3>講師</h3>
+<div class="card mb-4">
+  <div class="card-body">
+    <% if @schedule.users.any? %>
+      <ul class="list-group list-group-flush">
+        <% @schedule.users.each do |user| %>
+          <li class="list-group-item"><%= user.name %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted">未定</p>
+    <% end %>
+  </div>
+</div>
+
+<div class="mb-3">
+  <%= link_to "戻る", users_plans_path, class: "btn btn-secondary" %>
+</div>

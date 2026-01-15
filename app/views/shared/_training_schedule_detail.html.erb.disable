@@ -1,0 +1,45 @@
+<% training_schedules.each do |ts| %>
+  <h2 class="mb-3"><%= ts.training.title %></h2>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p><strong>内容:</strong> <%= ts.training.description %></p>
+
+      <p>
+        <strong>日時:</strong>
+        <%= ts.start_time.strftime("%Y/%m/%d %H:%M") %>
+        <% if ts.end_time.present? %>
+          ～ <%= ts.end_time.strftime("%H:%M") %>
+        <% end %>
+      </p>
+
+      <p><strong>会場:</strong> <%= ts.room&.name || "未定" %></p>
+    </div>
+  </div>
+
+  <h3>講師</h3>
+  <div class="card mb-4">
+    <div class="card-body">
+      <% if ts.users.any? %>
+        <ul class="list-group list-group-flush">
+          <% ts.users.each do |user| %>
+            <li class="list-group-item"><%= user.name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-muted">未定</p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if show_admin_buttons %>
+    <div class="mb-3 d-flex gap-2">
+      <%= link_to "戻る", back_path, class: "btn btn-secondary" %>
+      <%= link_to "編集", edit_admin_training_schedule_path(ts), class: "btn btn-primary ms-2" %>
+    </div>
+  <% else %>
+    <div class="mb-3">
+      <%= link_to "戻る", back_path, class: "btn btn-secondary" %>
+    </div>
+  <% end %>
+<% end %>

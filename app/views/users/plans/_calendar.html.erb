@@ -1,0 +1,59 @@
+<!-- app/views/users/plans/_calendar.html.erb -->
+<div id="user-calendar" class="calendar-loading"></div>
+
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+
+<style>
+  .calendar-loading {
+    visibility: hidden;
+  }
+</style>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener("turbo:load", function() {
+  const calendarEl = document.getElementById('user-calendar');
+  if (!calendarEl) return;
+
+  // Ruby の @schedules から JS 用イベントを作成
+  const events = <%= raw(@schedules.map { |schedule|
+    plan_id = schedule.plans.first&.id
+    {
+      id: schedule.id,
+      title: schedule.training.title,
+      start: schedule.start_time,
+      end: schedule.end_time,
+      url: plan_id ? users_plan_path(plan_id) : nil
+    }
+  }.to_json) %>;
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'ja',
+    timeZone: 'Asia/Tokyo',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: events,
+    eventClick: function(info) {
+      if (info.event.url) {
+        window.location.href = info.event.url;
+        info.jsEvent.preventDefault();
+      }
+    },
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }
+  });
+
+  calendar.render();
+  calendarEl.style.visibility = "visible";
+});
+</script>

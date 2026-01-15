@@ -1,8 +1,13 @@
 # app/models/plan.rb
 class Plan < ApplicationRecord
-  # 中間テーブルとの関連
+  # adminで使用　中間テーブルとの関連
   has_many :created_plans, dependent: :destroy
   has_many :training_schedules, through: :created_plans
+
+
+  # uesrsで使用　中間テーブルとの関連
+  has_many :plan_participations, dependent: :destroy
+  has_many :users, through: :plan_participations
 
   #プラン名空白NG
   validates :name, presence: true

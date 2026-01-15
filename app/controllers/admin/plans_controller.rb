@@ -75,10 +75,6 @@ class Admin::PlansController < ApplicationController
   end
 
   def plan_params
-    params.require(:plan).permit(
-      :name,
-      :description,
-      :participants
-    )
+    params.require(:plan).permit(:name, :description, training_schedule_ids: [], user_ids: [])
   end
 end
