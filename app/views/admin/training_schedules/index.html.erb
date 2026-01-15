@@ -1,31 +1,39 @@
-<h1>研修スケジュール</h1>
+<h1 class="mb-4">研修スケジュール</h1>
 
-<%= link_to "研修をセットする", new_admin_training_schedule_path, class: "btn btn-primary" %>
-<%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary" %>
+<div class="mb-3">
+  <%= link_to "研修をセットする", new_admin_training_schedule_path, class: "btn btn-primary me-2" %>
+  <%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary" %>
+</div>
 
-<div id="calendar"></div>
-
-<!-- Rails UJS -->
-<script src="https://cdn.jsdelivr.net/npm/@rails/ujs@7.1.2/dist/rails-ujs.min.js"></script>
-<script>
-  Rails.start()
-</script>
+<div id="calendar" class="calendar-loading"></div>
 
 <!-- FullCalendar CSS -->
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+
+<style>
+  /* 初期非表示してもDOM残す */
+  .calendar-loading {
+    visibility: hidden;
+  }
+</style>
 
 <!-- FullCalendar JS -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
-document.addEventListener('turbo:load', function() {
-  var calendarEl = document.getElementById('calendar');
+document.addEventListener("turbo:load", function() {
+  const calendarEl = document.getElementById('calendar');
   if (!calendarEl) return;
 
-  var calendar = new FullCalendar.Calendar(calendarEl, {
+  const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     locale: 'ja',
     timeZone: 'Asia/Tokyo',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
     events: '/admin/training_schedules.json',
     eventClick: function(info) {
       window.location.href = `/admin/training_schedules/${info.event.id}`;
@@ -38,5 +46,6 @@ document.addEventListener('turbo:load', function() {
   });
 
   calendar.render();
+  calendarEl.style.visibility = "visible"; // レンダリング後に表示
 });
 </script>

@@ -40,6 +40,17 @@ class Admin::TrainingsController < ApplicationController
     end
   end
 
+  #研修を削除する際、それを含むスケジュールがある場合に禁止
+  def destroy
+    @training = Training.find(params[:id])
+    if @training.destroy
+      redirect_to admin_trainings_path, notice: "研修を削除しました"
+    else
+      redirect_to admin_trainings_path,
+                alert: @training.errors.full_messages.join("\n")
+    end
+  end
+
   private
 
   def training_params

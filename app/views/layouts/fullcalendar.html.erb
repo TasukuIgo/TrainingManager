@@ -16,10 +16,6 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Bootstrap 読み込み %>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -28,20 +24,6 @@
     <% if current_user %>
       <%= render 'shared/header' %>
     <% end %>
-
-  <% if flash[:notice].present? %>
-    <div class="alert alert-success">
-      <%= flash[:notice] %>
-   </div>
-  <% end %>
-
-  <% if flash[:alert].present? %>
-    <div class="alert alert-danger">
-      <%= raw(flash[:alert]) %>
-    </div>
-  <% end %>
-
-
 
     <%= yield %>
   </body>

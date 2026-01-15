@@ -1,27 +1,29 @@
 <!-- app/views/admin/trainings/index.html.erb -->
-<h1>研修一覧</h1>
+<h1 class="mb-4">研修一覧</h1>
 
-<%= link_to "＋ 新規研修作成", new_admin_training_path %>
+<div class="mb-3">
+  <%= link_to "＋ 新規研修作成", new_admin_training_path, class: "btn btn-primary" %>
+</div>
 
-<hr>
-
-<table border="1" cellpadding="8">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>タイトル</th>
-      <th>作成日</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @trainings.each do |training| %>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover align-middle">
+    <thead class="table-light">
       <tr>
-        <td><%= training.id %></td>
-        <td>
-          <%= link_to training.title, admin_training_path(training) %>
-        </td>
-        <td><%= l training.created_at, format: :short %></td>
+        <th>ID</th>
+        <th>タイトル</th>
+        <th>作成日</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @trainings.each do |training| %>
+        <tr>
+          <td><%= training.id %></td>
+          <td>
+            <%= link_to training.title, admin_training_path(training), class: "text-decoration-none" %>
+          </td>
+          <td><%= l training.created_at, format: "%Y/%m/%d %H:%M" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

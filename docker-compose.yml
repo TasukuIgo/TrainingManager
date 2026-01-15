@@ -4,6 +4,7 @@ services:
     command: bundle exec bin/rails server -b 0.0.0.0
     volumes:
       - .:/rails
+      - bundle:/usr/local/bundle   # Gem キャッシュ用ボリューム
 
     ports:
       - "3000:3000"
@@ -26,5 +27,5 @@ services:
       - db-data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
-
+  db-data: {}   # ここは空のマッピングでOK
+  bundle: {}    # ここも空のマッピング
