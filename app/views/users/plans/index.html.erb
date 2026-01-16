@@ -1,2 +1,12 @@
-<h1>Users::Plan#index</h1>
-<p>Find me in app/views/users/plan/index.html.erb</p>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "shared_index_button", "data-turbo-track": "reload" %>
+<% end %>
+
+<%= render "shared/calendar",
+  calendar_id: "user-plans-calendar",
+  schedules: @my_schedules,
+  url_for_event: ->(schedule) {
+    plan_id = schedule.plans.first&.id
+    plan_id ? users_plan_path(plan_id) : nil
+  }
+%>

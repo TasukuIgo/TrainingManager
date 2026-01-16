@@ -1,12 +1,30 @@
-<h1>Admin Dashboard</h1>
+<h1 class="mb-4">Admin Dashboard</h1>
 
-<ul>
-  <h3> 研修（Training） </h3>
-  <li><%= link_to "登録済み研修一覧", admin_trainings_path %></li>
-  <li><%= link_to "研修作成", new_admin_training_path %></li>
-  <li><%= link_to "カレンダー", admin_training_schedules_path %></li>
+<div class="row">
+  <!-- 研修セクション -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        研修（Training）
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%= link_to "登録済み研修一覧", admin_trainings_path, class: "btn btn-outline-primary w-100 text-start" %></li>
+        <li class="list-group-item"><%= link_to "研修作成", new_admin_training_path, class: "btn btn-outline-success w-100 text-start" %></li>
+        <li class="list-group-item"><%= link_to "カレンダー", admin_training_schedules_path, class: "btn btn-outline-info w-100 text-start" %></li>
+      </ul>
+    </div>
+  </div>
 
-  <h3> プラン（Plan） </h3>
-  <li><%= link_to "プラン一覧", admin_plans_path %></li>
-  <%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary" %>
-</ul>
+  <!-- プランセクション -->
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-success text-white">
+        プラン（Plan）
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%= link_to "プラン一覧", admin_plans_path, class: "btn btn-outline-primary w-100 text-start" %></li>
+        <li class="list-group-item"><%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary w-100" %></li>
+      </ul>
+    </div>
+  </div>
+</div>

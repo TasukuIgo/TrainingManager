@@ -1,42 +1,15 @@
-<h1>研修スケジュール</h1>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "shared_index_button", "data-turbo-track": "reload" %>
+<% end %>
 
-<%= link_to "研修をセットする", new_admin_training_schedule_path, class: "btn btn-primary" %>
-<%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary" %>
 
-<div id="calendar"></div>
+<h1 class="mb-4">研修スケジュール</h1>
 
-<!-- Rails UJS -->
-<script src="https://cdn.jsdelivr.net/npm/@rails/ujs@7.1.2/dist/rails-ujs.min.js"></script>
-<script>
-  Rails.start()
-</script>
+<%= render 'shared/index_button' %>
 
-<!-- FullCalendar CSS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
-
-<!-- FullCalendar JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-
-<script>
-document.addEventListener('turbo:load', function() {
-  var calendarEl = document.getElementById('calendar');
-  if (!calendarEl) return;
-
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    locale: 'ja',
-    timeZone: 'Asia/Tokyo',
-    events: '/admin/training_schedules.json',
-    eventClick: function(info) {
-      window.location.href = `/admin/training_schedules/${info.event.id}`;
-    },
-    eventTimeFormat: {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    }
-  });
-
-  calendar.render();
-});
-</script>
+<%= render partial: "shared/calendar",
+           locals: {
+             calendar_id: "calendar",
+             schedules: @training_schedules,
+             url_for_event: ->(s) { admin_training_schedule_path(s) }
+           } %>

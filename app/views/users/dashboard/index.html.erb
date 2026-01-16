@@ -1,7 +1,19 @@
-<h1>User Dashboard</h1>
+<h2 class="h4 mb-4">ダッシュボード</h2>
 
-<ul>
-  <li><%= link_to "マイスケジュール", users_training_schedules_path %></li>
-  <li><%= link_to "受講/開催予定研修一覧", users_training_schedules_path %></li>
-  <li><%= link_to "参加済み研修", users_training_histories_path %></li>
-</ul>
+<div class="row mb-4">
+  <!-- 1: 参加予定研修 -->
+  <div class="col-md-4 mb-3">
+    <%= link_to '私の研修', users_plans_path, class: "btn btn-primary btn-block" %>
+  </div>
+
+  <!-- 2: 全研修一覧 -->
+  <div class="col-md-4 mb-3">
+    <%= link_to '全ての研修', users_training_schedules_path, class: "btn btn-success btn-block" %>
+  </div>
+
+  <!-- 3: 参加済み研修 -->
+  <div class="col-md-4 mb-3">
+    <%= link_to '参加済み研修', users_training_participations_path, class: "btn btn-secondary btn-block" %>
+  </div>
+</div>
+

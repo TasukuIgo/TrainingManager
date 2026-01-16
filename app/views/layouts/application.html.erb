@@ -9,15 +9,20 @@
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" data-turbo-track="reload">
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" data-turbo-track="reload" defer></script>
   </head>
 
   <body>
@@ -25,6 +30,26 @@
       <%= render 'shared/header' %>
     <% end %>
 
+    <% if flash[:notice].present? %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger">
+        <%= raw(flash[:alert]) %>
+      </div>
+    <% end %>
+
     <%= yield %>
+
+    <!-- Turbo対応でBootstrapツールチップ再初期化 -->
+    <script>
+      document.addEventListener("turbo:load", function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el) });
+      });
+    </script>
   </body>
 </html>

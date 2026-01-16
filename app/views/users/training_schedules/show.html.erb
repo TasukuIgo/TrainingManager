@@ -1,2 +1,8 @@
-<h1>Users::TrainingSchedule#show</h1>
-<p>Find me in app/views/users/training_schedule/show.html.erb</p>
+<%= render "shared/training_schedule_detail",
+  training_schedule: @training_schedule %>
+
+<div class="mb-3">
+  <%= link_to "戻る",
+    users_training_schedules_path,
+    class: "btn btn-secondary" %>
+</div>

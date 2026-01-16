@@ -1,0 +1,53 @@
+<h2 class="mb-4">参加済み研修</h2>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>研修名</th>
+          <th>日時</th>
+          <th>会場</th>
+          <th>ステータス</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @training_participations.each do |tp| %>
+          <% schedule = tp.training_schedule %>
+
+          <tr>
+            <td class="fw-semibold">
+              <%= link_to users_training_participation_path(tp),
+                          class: "text-decoration-none" do %>
+                <%= schedule.training.title %>
+              <% end %>
+            </td>
+
+            <td>
+              <%= schedule.start_time.strftime("%Y/%m/%d %H:%M") %>
+            </td>
+
+            <td>
+              <%= schedule.room&.name || content_tag(:span, "未定", class: "text-muted") %>
+            </td>
+
+            <td>
+              <span class="badge bg-secondary">
+                <%= tp.status.presence || "参加済み" %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @training_participations.empty? %>
+          <tr>
+            <td colspan="4" class="text-center text-muted py-4">
+              参加済みの研修はありません
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
