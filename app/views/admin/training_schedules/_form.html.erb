@@ -10,32 +10,53 @@
     </div>
   <% end %>
 
+  <!-- 研修選択 -->
   <div class="mb-3">
     <%= f.label :training_id, "研修", class: "form-label" %>
     <%= f.collection_select :training_id, @trainings, :id, :title, {}, class: "form-select" %>
+    <%# Trainingモデルからタイトルを取得してプルダウン表示 %>
   </div>
 
+  <!-- 開始日時 -->
   <div class="mb-3">
     <%= f.label :start_time, "開始日時", class: "form-label" %>
-    <%= f.datetime_local_field :start_time, class: "form-control w-auto" %>
+    <%= f.datetime_local_field :start_time, class: "form-control w-auto", id: "start_time" %>
+    <%# datetime_local_fieldで日付と時刻を同時に入力できる %>
   </div>
 
+  <!-- 終了時刻 -->
   <div class="mb-3">
-    <%= f.label :end_time, "終了日時", class: "form-label" %>
-    <%= f.datetime_local_field :end_time, class: "form-control w-auto" %>
+    <%= f.label :end_time, "終了時刻", class: "form-label" %>
+    <%= f.time_field :end_time, class: "form-control w-auto", id: "end_time" %>
+    <%# 時刻のみ入力。Start日時と連動して初期値はStart+1時間に設定される %>
   </div>
 
+  <!-- 会場 -->
   <div class="mb-3">
     <%= f.label :room_id, "会場", class: "form-label" %>
-    <%= f.collection_select :room_id, @rooms, :id, :name, {}, class: "form-select" %>
+    <%= f.collection_select :room_id, @rooms, :id, :name, { prompt: "未定" }, class: "form-select" %>
+    <%# Roomモデルから名前を取得。未選択でも保存可能 %>
   </div>
 
+  <!-- 講師 -->
   <div class="mb-3">
     <%= f.label :instructor_id, "講師", class: "form-label" %>
     <%= f.collection_select :instructor_id, @instructors, :id, :name,
-        { prompt: "未定" }, class: "form-select" %>
+          { prompt: "未定" }, class: "form-select" %>
+    <%# ここはモデルの属性ではなく params[:training_schedule][:instructor_id] で利用 %>
   </div>
 
+
+  <!-- 参加者 -->
+  <div class="mb-3">
+    <%= f.label :participant_ids, "参加者", class: "form-label" %>
+    <%= f.collection_select :participant_ids, @users, :id, :name,
+          { prompt: "未定", multiple: true }, class: "form-select" %>
+    <small class="form-text text-muted">参加者は任意です。未選択でもOK。</small>
+    <%# Userモデル全員を表示。複数選択可能で未選択でも保存できる %>
+  </div>
+
+  <!-- ボタン -->
   <div class="mt-3">
     <%= f.submit(@training_schedule.persisted? ? "更新" : "作成",
         class: "btn btn-primary") %>
@@ -49,6 +70,53 @@
         admin_training_schedule_path(@training_schedule),
         data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
         class: "btn btn-danger" %>
-        <% end %>
+    <% end %>
   </div>
+
+  <!-- JS: Start/End時間連動 + End初期値 Start+1時間 -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const startInput = document.getElementById("start_time");
+    const endInput = document.getElementById("end_time");
+    if (!startInput || !endInput) return; // 要素がなければ処理しない
+
+    const now = new Date();
+    now.setSeconds(0,0,0); // 秒とミリ秒をリセット
+
+    // 日付をdatetime-local形式に変換
+    function formatDateTimeLocal(date) {
+      const pad = (n) => String(n).padStart(2,"0");
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
+    // 時刻部分のみをHH:MM形式に変換
+    function formatTime(date) {
+      return date.toTimeString().slice(0,5);
+    }
+
+    // Start日時の最小値を現在時刻以降に設定
+    startInput.min = formatDateTimeLocal(now);
+
+    // Start日時が変更されたらEnd日時を更新
+    startInput.addEventListener("change", () => {
+      const startDate = new Date(startInput.value);
+      if (isNaN(startDate)) return;
+
+      const endMax = new Date(startDate);
+      endMax.setHours(23,59,0,0); // Endの最大値は同日23:59
+
+      // End初期値 = Start + 1時間
+      let initialEnd = new Date(startDate.getTime() + 60*60*1000);
+      if (initialEnd > endMax) initialEnd = endMax; // 上限チェック
+
+      endInput.value = formatTime(initialEnd); // Endの値を初期化
+      endInput.min = formatTime(startDate);     // Endの最小値をStartに設定
+      endInput.max = formatTime(endMax);        // Endの最大値を23:59に設定
+    });
+
+    // 初回ロード時にStartの初期値セット + changeイベントを強制発火
+    if (!startInput.value) startInput.value = formatDateTimeLocal(now);
+    startInput.dispatchEvent(new Event("change"));
+  });
+  </script>
 <% end %>

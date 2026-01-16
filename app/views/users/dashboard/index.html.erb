@@ -3,17 +3,17 @@
 <div class="row mb-4">
   <!-- 1: 参加予定研修 -->
   <div class="col-md-4 mb-3">
-    <%= link_to '参加予定研修カレンダー', users_plans_path, class: "btn btn-primary btn-block" %>
+    <%= link_to '私の研修', users_plans_path, class: "btn btn-primary btn-block" %>
   </div>
 
   <!-- 2: 全研修一覧 -->
   <div class="col-md-4 mb-3">
-    <%= link_to '全研修一覧', users_training_schedules_path, class: "btn btn-success btn-block" %>
+    <%= link_to '全ての研修', users_training_schedules_path, class: "btn btn-success btn-block" %>
   </div>
 
   <!-- 3: 参加済み研修 -->
   <div class="col-md-4 mb-3">
-    <%= link_to '参加済み研修', users_training_histories_path, class: "btn btn-secondary btn-block" %>
+    <%= link_to '参加済み研修', users_training_participations_path, class: "btn btn-secondary btn-block" %>
   </div>
 </div>
 

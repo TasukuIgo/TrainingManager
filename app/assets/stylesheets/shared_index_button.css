@@ -1,0 +1,21 @@
+/* Indexページ専用のボタンスタイル */
+.index-button-group {
+  margin-bottom: 1rem;
+}
+
+.index-button-group a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #0d6efd; /* Bootstrap Primary */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  font-weight: 500;
+}
+
+.index-button-group a:hover {
+  background-color: #0b5ed7;
+}
+.index-button-group a.me-2 {
+  margin-right: 0.5rem;
+}

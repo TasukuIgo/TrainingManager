@@ -11,6 +11,7 @@ class Plan < ApplicationRecord
 
   #プラン名空白NG
   validates :name, presence: true
+  validates :users, presence: { message: "を1人以上選択してください" }
 
   # フォームで送られてくる研修スケジュールIDを一時保持
   attr_accessor :selected_training_schedule_ids

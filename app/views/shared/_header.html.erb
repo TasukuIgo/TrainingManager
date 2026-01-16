@@ -1,29 +1,66 @@
-<header class="navbar navbar-expand-lg bg-secondary bg-opacity-25 border-bottom">
-  <div class="container-fluid">
-    <%= link_to 'Training Manager',
-        dashboard_path_by_role,
-        class: 'navbar-brand fw-semibold text-dark' %>
+<header class="app-header">
+  <div class="app-header-container">
+    <%= link_to 'Training Manager', dashboard_path_by_role, class: 'app-header-brand' %>
 
     <% if current_user %>
-      <button class="navbar-toggler" type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#appNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="appNavbar">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-
-          <li class="nav-item">
+      <nav class="app-header-nav">
+        <ul class="app-header-list">
+          <li>
             <%= link_to 'ログアウト',
-                logout_path,
-                method: :delete,
-                data: { turbo: false },
-                class: 'nav-link text-dark' %>
+                        logout_path,
+                        method: :delete,
+                        data: { turbo: false },
+                        class: 'app-header-link' %>
           </li>
-
         </ul>
-      </div>
+      </nav>
     <% end %>
   </div>
 </header>
+
+<style>
+/* コンテナ */
+.app-header {
+  background-color: rgba(108, 117, 125, 0.25); /* bg-secondary bg-opacity-25 */
+  border-bottom: 1px solid #dee2e6; /* border-bottom */
+  padding: 0.5rem 1rem;
+  font-family: sans-serif;
+}
+
+/* 内部配置 */
+.app-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ブランド名 */
+.app-header-brand {
+  font-weight: 600; /* fw-semibold */
+  color: #212529; /* text-dark */
+  text-decoration: none;
+  font-size: 1.25rem;
+}
+
+/* ナビゲーション */
+.app-header-nav {}
+
+.app-header-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+/* リンク */
+.app-header-link {
+  text-decoration: none;
+  color: #212529;
+  font-weight: 500;
+}
+
+.app-header-link:hover {
+  text-decoration: underline;
+}
+</style>

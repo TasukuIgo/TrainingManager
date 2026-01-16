@@ -19,9 +19,9 @@
 <h3>講師</h3>
 <div class="card mb-4">
   <div class="card-body">
-    <% if @training_schedule.users.any? %>
+    <% if @training_schedule.participants.any? %>
       <ul class="list-group list-group-flush">
-        <% @training_schedule.users.each do |user| %>
+        <% @training_schedule.participants.each do |user| %>
           <li class="list-group-item"><%= user.name %></li>
         <% end %>
       </ul>

@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "shared_index_button", "data-turbo-track": "reload" %>
+<% end %>
+
 <%= render "shared/calendar",
   calendar_id: "user-training-schedule-calendar",
   schedules: @training_schedules,

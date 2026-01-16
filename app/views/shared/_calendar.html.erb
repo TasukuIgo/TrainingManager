@@ -1,9 +1,10 @@
+<%# _calendar.html.erb %>
 <div id="<%= calendar_id %>" class="calendar-loading"></div>
 
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
-
+  href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css"
+  data-turbo-track="reload">
 
 <style>
   .calendar-loading {
@@ -20,6 +21,7 @@ document.addEventListener("turbo:load", function() {
   const calendarEl = document.getElementById("<%= calendar_id %>");
   if (!calendarEl) return;
 
+  // Ruby側で渡されたスケジュールを JS に変換
   const events = <%= raw(
     schedules.map { |s|
       {
@@ -32,6 +34,7 @@ document.addEventListener("turbo:load", function() {
     }.to_json
   ) %>;
 
+  // FullCalendar 初期化
   const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     locale: 'ja',
@@ -47,10 +50,15 @@ document.addEventListener("turbo:load", function() {
         info.jsEvent.preventDefault();
         window.location.href = info.event.url;
       }
+    },
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
     }
   });
 
   calendar.render();
-  calendarEl.style.visibility = "visible";
+  calendarEl.style.visibility = "visible"; // 描画後に表示
 });
 </script>
