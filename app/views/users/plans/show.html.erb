@@ -1,27 +1,27 @@
-<h2 class="mb-3"><%= @schedule.training.title %></h2>
+<h2 class="mb-3"><%= @training_schedule.training.title %></h2>
 
 <div class="card mb-4">
   <div class="card-body">
-    <p><strong>内容:</strong> <%= @schedule.training.description %></p>
+    <p><strong>内容:</strong> <%= @training_schedule.training.description %></p>
 
     <p>
       <strong>日時:</strong>
-      <%= @schedule.start_time.strftime("%Y/%m/%d %H:%M") %>
-      <% if @schedule.end_time.present? %>
-        ～ <%= @schedule.end_time.strftime("%H:%M") %>
+      <%= @training_schedule.start_time.strftime("%Y/%m/%d %H:%M") %>
+      <% if @training_schedule.end_time.present? %>
+        ～ <%= @training_schedule.end_time.strftime("%H:%M") %>
       <% end %>
     </p>
 
-    <p><strong>会場:</strong> <%= @schedule.room&.name || "未定" %></p>
+    <p><strong>会場:</strong> <%= @training_schedule.room&.name || "未定" %></p>
   </div>
 </div>
 
 <h3>講師</h3>
 <div class="card mb-4">
   <div class="card-body">
-    <% if @schedule.users.any? %>
+    <% if @training_schedule.users.any? %>
       <ul class="list-group list-group-flush">
-        <% @schedule.users.each do |user| %>
+        <% @training_schedule.users.each do |user| %>
           <li class="list-group-item"><%= user.name %></li>
         <% end %>
       </ul>

@@ -55,7 +55,7 @@ class Admin::TrainingSchedulesController < ApplicationController
   end
 
   def index
-    @schedules = TrainingSchedule
+    @training_schedules = TrainingSchedule
       .includes(:training)
       .map do |ts|
         {
@@ -68,7 +68,7 @@ class Admin::TrainingSchedulesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @schedules }
+      format.json { render json: @training_schedules }
     end
   end
 

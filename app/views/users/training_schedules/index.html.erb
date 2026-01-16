@@ -1,10 +1,7 @@
-<h1>研修カレンダー</h1>
-
-<ul>
-  <% @schedules.each do |schedule| %>
-    <li>
-      <%= schedule.date.strftime("%m/%d") %>
-      <%= schedule.training.title %>
-    </li>
-  <% end %>
-</ul>
+<%= render "shared/calendar",
+  calendar_id: "user-training-schedule-calendar",
+  schedules: @training_schedules,
+  url_for_event: ->(schedule) {
+    users_training_schedule_path(schedule)
+  }
+%>

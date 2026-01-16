@@ -1,0 +1,56 @@
+<div id="<%= calendar_id %>" class="calendar-loading"></div>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+
+
+<style>
+  .calendar-loading {
+    visibility: hidden;
+  }
+</style>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"
+  data-turbo-track="reload"></script>
+
+<script>
+document.addEventListener("turbo:load", function() {
+  const calendarEl = document.getElementById("<%= calendar_id %>");
+  if (!calendarEl) return;
+
+  const events = <%= raw(
+    schedules.map { |s|
+      {
+        id: s.id,
+        title: s.training.title,
+        start: s.start_time&.iso8601,
+        end: s.end_time&.iso8601,
+        url: url_for_event.call(s)
+      }
+    }.to_json
+  ) %>;
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    locale: 'ja',
+    timeZone: 'Asia/Tokyo',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: events,
+    eventClick(info) {
+      if (info.event.url) {
+        info.jsEvent.preventDefault();
+        window.location.href = info.event.url;
+      }
+    }
+  });
+
+  calendar.render();
+  calendarEl.style.visibility = "visible";
+});
+</script>

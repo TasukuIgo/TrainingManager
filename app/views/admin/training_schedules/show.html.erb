@@ -1,37 +1,9 @@
-<h2 class="mb-3"><%= @training_schedule.training.title %></h2>
-
-<div class="card mb-4">
-  <div class="card-body">
-    <p><strong>内容:</strong> <%= @training_schedule.training.description %></p>
-
-    <p>
-      <strong>日時:</strong>
-      <%= @training_schedule.start_time.strftime("%Y/%m/%d %H:%M") %>
-      <% if @training_schedule.end_time.present? %>
-        ～ <%= @training_schedule.end_time.strftime("%H:%M") %>
-      <% end %>
-    </p>
-
-    <p><strong>会場:</strong> <%= @training_schedule.room&.name || "未定" %></p>
-  </div>
-</div>
-
-<h3>講師</h3>
-<div class="card mb-4">
-  <div class="card-body">
-    <% if @training_schedule.users.any? %>
-      <ul class="list-group list-group-flush">
-        <% @training_schedule.users.each do |user| %>
-          <li class="list-group-item"><%= user.name %></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-muted">未定</p>
-    <% end %>
-  </div>
-</div>
+<%= render "shared/training_schedule_detail",
+  training_schedule: @training_schedule %>
 
 <div class="mb-3">
   <%= link_to "戻る", admin_training_schedules_path, class: "btn btn-secondary" %>
-  <%= link_to "編集", edit_admin_training_schedule_path(@training_schedule), class: "btn btn-primary ms-2" %>
+  <%= link_to "編集",
+    edit_admin_training_schedule_path(@training_schedule),
+    class: "btn btn-primary ms-2" %>
 </div>

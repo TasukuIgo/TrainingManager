@@ -1,6 +1,8 @@
-<div class="container mt-4">
-  <h1>参加予定研修一覧</h1>
-
-  <!-- 参加予定研修カレンダー -->
-  <%= render 'calendar' %>
-</div>
+<%= render "shared/calendar",
+  calendar_id: "user-plans-calendar",
+  schedules: @my_schedules,
+  url_for_event: ->(schedule) {
+    plan_id = schedule.plans.first&.id
+    plan_id ? users_plan_path(plan_id) : nil
+  }
+%>
