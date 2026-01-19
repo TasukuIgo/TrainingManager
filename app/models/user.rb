@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  has_secure_password validations: false
-
   # 講師として担当している研修
   has_many :instructed_training_schedules,
            class_name: "TrainingSchedule",
@@ -20,10 +18,17 @@ class User < ApplicationRecord
   # role スコープ
   scope :instructors, -> { where(role: "instructor") }
 
-    # 外部認証アプリのユーザーID
+  # 外部認証アプリのユーザーID
   validates :external_user_id, presence: true, uniqueness: true
+
+  ROLES = %w[admin instructor user].freeze
+  validates :role, inclusion: { in:ROLES }
 
   def admin?
     role == "admin"
+  end
+
+  def instructor?
+    role == "instructor"
   end
 end
