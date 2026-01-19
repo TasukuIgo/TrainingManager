@@ -1,4 +1,6 @@
 class Admin::TrainingSchedulesController < ApplicationController
+  
+  before_action :require_login
   before_action :load_master_data, only: [:new, :create, :edit, :update]
 
 

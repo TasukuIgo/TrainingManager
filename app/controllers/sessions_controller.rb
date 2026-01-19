@@ -6,17 +6,30 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(name: params[:name])
-    if user&.authenticate(params[:password])
-      session[:user_id] = user.id
+    auth_result = ExternalAuth::Authenticate.new(
+      login_name: params[:name]
+      password:   params[:password]
+    ).call
 
-      # ロール別にダッシュボードへリダイレクト
-      redirect_to dashboard_path_by_role, notice: "ログイン成功"
-    else
-      flash.now[:alert] = "名前かパスワードが間違っています"
-      render :new
-    end
+    user = User.find_or_initialize_by(
+      external_user_id: auth_result[:external_user_id] # 社内APIから一致するものを探すか新規作成するか
+    )
+
+    # 外部認証情報を同期
+    user.name      = external_user[:name]       # 社内APIのnameをこのアプリのnameとする
+    user.real_name = external_user[:real_name]  #社内APIのreal_nameをこのアプリのreal_nameとする
+    
+    user.role ||= "user" # なければ保存
+
+    user.save!
+
+    session[:user_id] = user.id
+    redirect_to dashboard_path_by_role, notice: "ログイン成功"
+  rescue ExternalAuth::Authenticate::AuthError
+    flash.now[:alert] = "名前かパスワードが間違っています"
+    render :new, status: :unprocessable_entity
   end
+
 
   def destroy
     session.delete(:user_id)

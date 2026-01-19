@@ -1,5 +1,7 @@
 class Admin::TrainingsController < ApplicationController
 
+  before_action :require_login
+
 # 新規作成ページ用のnewアクション
   def new
     @training = Training.new

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_14_080251) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_19_022621) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,10 +88,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_080251) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.bigint "external_user_id"
     t.string "name"
     t.string "password_digest"
+    t.string "real_name"
     t.string "role"
     t.datetime "updated_at", null: false
+    t.index ["external_user_id"], name: "index_users_on_external_user_id", unique: true
   end
 
   add_foreign_key "created_plans", "plans"

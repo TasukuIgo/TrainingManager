@@ -28,3 +28,27 @@
     </div>
   </div>
 </div>
+
+<hr>
+
+
+#開発確認用
+<p>
+  ログイン中ユーザーID：
+  <%= current_user.id %>
+</p>
+
+<p>
+  ログインID（name）：
+  <%= current_user.name %>
+</p>
+
+<p>
+  表示名（real_name）：
+  <%= current_user.real_name.presence || "未設定" %>
+</p>
+
+<p>
+  ロール：
+  <%= current_user.role.presence || "未設定" %>
+</p>

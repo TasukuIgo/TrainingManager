@@ -1,5 +1,6 @@
 class Admin::PlansController < ApplicationController
-
+  
+  before_action :require_login
   before_action :set_plan, only: [:edit, :update, :destroy]
   before_action :load_training_schedules, only: [:new, :create, :edit, :update]
 

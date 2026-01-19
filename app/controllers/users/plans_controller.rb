@@ -1,4 +1,7 @@
 class Users::PlansController < ApplicationController
+
+  before_action :require_login
+
   # current_user が参加している Plan に紐づく TrainingSchedule を取得
   def index
     @my_schedules = TrainingSchedule
