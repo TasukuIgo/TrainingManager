@@ -1,5 +1,6 @@
 <h2 class="mb-3"><%= training_schedule.training&.title || "タイトル未設定" %></h2>
 
+<!-- 内容・日時・会場 -->
 <div class="card mb-4">
   <div class="card-body">
     <p><strong>内容:</strong> <%= training_schedule.training&.description || "未設定" %></p>
@@ -16,15 +17,14 @@
   </div>
 </div>
 
+<!-- 講師 -->
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title">講師</h5>
     <% if training_schedule.instructors.any? %>
       <ul class="list-group list-group-flush">
         <% training_schedule.instructors.each do |instructor| %>
-          <li class="list-group-item">
-            <%= instructor.user&.name || "未設定" %>
-          </li>
+         <li class="list-group-item"><%= instructor.user&.name || "未設定" %></li>
         <% end %>
       </ul>
     <% else %>
@@ -33,19 +33,20 @@
   </div>
 </div>
 
+<!-- 参加者 -->
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title">参加者</h5>
-    <% if training_schedule.participants.any? %>
-      <ul class="list-group list-group-flush">
-        <% training_schedule.participants.each do |participant| %>
-          <li class="list-group-item">
-            <%= participant.name || "未設定" %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p class="text-muted mb-0">未定</p>
+<% if training_schedule.participants.any? %>
+  <ul class="list-group list-group-flush">
+    <% training_schedule.participants.uniq { |p| p.id }.each do |participant| %>
+      <li class="list-group-item">
+        <%= participant.name.presence || "未設定" %>
+      </li>
     <% end %>
+  </ul>
+<% else %>
+  <p class="text-muted mb-0">未定</p>
+<% end %>
   </div>
 </div>
