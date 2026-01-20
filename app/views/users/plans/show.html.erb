@@ -23,7 +23,7 @@
       <ul class="list-group list-group-flush">
         <% @training_schedule.participants.each do |user| %>
           <li class="list-group-item"><%= user.name %></li>
-        <% end %>
+          <% end %>
       </ul>
     <% else %>
       <p class="text-muted">未定</p>

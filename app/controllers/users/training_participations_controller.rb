@@ -1,4 +1,3 @@
-# app/controllers/users/training_participations_controller.rb
 class Users::TrainingParticipationsController < ApplicationController
   
   before_action :require_login

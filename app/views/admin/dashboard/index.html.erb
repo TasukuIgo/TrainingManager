@@ -31,6 +31,12 @@
 
 <hr>
 
+<% if current_user.admin? %>
+  <div class="mt-4 text-center">
+    <%= link_to "ユーザー一覧（管理者用）", admin_users_list_index_path,
+                class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>
 
 #開発確認用
 <p>

@@ -1,0 +1,89 @@
+#calendar {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 700px;
+}
+
+#user-training-schedule-calendar {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 700px;
+}
+
+/* イベント文字色を黒 */
+.fc-event,
+.fc-event-title,
+.fc-event-time {
+  color: #000 !important;
+}
+
+/* 日付ヘッダー（曜日・日付） */
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+  color: #000;
+}
+
+/* 過去の日付セル */
+.fc-day-past {
+  background-color: #f5f5f5;
+}
+
+/* 過去の日付の文字 */
+.fc-day-past .fc-daygrid-day-number {
+  color: #999;
+}
+
+/* 過去日のイベント */
+.fc-day-past .fc-event {
+  opacity: 0.5;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* 凡例と色分け */
+.legend-color.plan {
+  background-color: #1e90ff; /* 青 */
+}
+
+.legend-color.training {
+  background-color: #28a745; /* 緑 */
+}
+
+.legend-color.instructor {
+  background-color: #fd7e14; /* オレンジ */
+}
+
+.fc-event.plan_participant {
+  background-color: #1e90ff; /* 青 */
+  border-color: #1e90ff;
+  color: white;
+}
+
+.fc-event.training_participant {
+  background-color: #28a745; /* 緑 */
+  border-color: #28a745;
+  color: white;
+}
+
+.fc-event.instructor {
+  background-color: #ff8c00; /* オレンジ */
+  border-color: #ff8c00;
+  color: white;
+}

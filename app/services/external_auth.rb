@@ -1,6 +1,8 @@
 module ExternalAuth
   class Authenticate
     class AuthError < StandardError; end
+    class ConnectionError < StandardError; end
+    class TimeoutError    < StandardError; end
       
       #初めてのログイン
       def initialize(login_name:, password:)
@@ -24,18 +26,15 @@ module ExternalAuth
     private
 
     def authenticate_with_external_api
-      # ダミー認証条件
-      if @login_name == "yamada" && @password == "password"
-        {
-          success: true,
-          id: 123,
-          name: "yamada",
-          real_name: "山田 太郎"
-        }
+      case @login_name
+      when "yamada"
+        return { success: @password == "password", id: 123, login_name: "yamada", real_name: "山田 太郎" }
+      when "instructor"
+        return { success: @password == "password", id: 1, login_name: "instructor", real_name: "テスト用講師" }
+      when "user"
+        return { success: @password == "password", id: 2, login_name: "user", real_name: "テスト用一般ユーザー" }
       else
-        {
-          success: false
-        }
+        return { success: false }
       end
     end
   end

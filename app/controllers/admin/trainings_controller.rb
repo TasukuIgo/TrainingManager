@@ -20,7 +20,7 @@ class Admin::TrainingsController < ApplicationController
   end
 
   def index
-    @trainings = Training.order(created_at: :desc)
+    @trainings = Training.order(created_at: :asc)
   end
 
   def show

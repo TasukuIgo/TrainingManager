@@ -1,4 +1,3 @@
-# app/models/plan.rb
 class Plan < ApplicationRecord
   # adminで使用　中間テーブルとの関連
   has_many :created_plans, dependent: :destroy
@@ -9,6 +8,9 @@ class Plan < ApplicationRecord
   has_many :plan_participations, dependent: :destroy
   has_many :users, through: :plan_participations
 
+  # adminで使用　中間テーブルとの関連
+  has_many :participants, through: :plan_participations, source: :user
+
   #プラン名空白NG
   validates :name, presence: true
   validates :users, presence: { message: "を1人以上選択してください" }
@@ -18,19 +20,18 @@ class Plan < ApplicationRecord
 
   # 保存前に期間・研修数を計算
   before_save :set_dates_and_count
-end
 
-  private
+  def start_date
+      training_schedules.minimum(:start_time)&.to_date
+    end
 
-  # 研修初日と最終日を拾う → プラン期間・研修数計算に使用
-  def set_dates_and_count
-    return unless selected_training_schedule_ids.present?
-
-    schedules = TrainingSchedule.where(id: selected_training_schedule_ids)
-
-    # start_time / end_time を使用
-    self.start_date = schedules.minimum(:start_time)&.to_date
-    self.end_date   = schedules.maximum(:end_time)&.to_date || schedules.maximum(:start_time)&.to_date
-
-    self.training_count = schedules.count
+   def end_date
+    training_schedules.maximum(:start_time)&.to_date
   end
+
+  def training_days
+    return nil if start_date.blank? || end_date.blank?
+
+    (end_date - start_date).to_i + 1
+  end
+end

@@ -19,6 +19,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_admin
+   redirect_to root_path, alert: "権限がありません" unless current_user&.admin?
+  end
+
+  def require_instructor
+    redirect_to root_path, alert: "権限がありません" unless current_user&.instructor?
+  end
+  
+
   # 一般ユーザーが管理者か（ロールはこのアプリ内の設定）
   def dashboard_path_by_role
     if current_user.admin?

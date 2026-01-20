@@ -1,0 +1,60 @@
+/* ===== header.css ===== */
+
+/* コンテナ */
+.app-header {
+  background-color: rgba(108, 117, 125, 0.25); /* bg-secondary bg-opacity-25 */
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.5rem 1rem;
+  font-family: sans-serif;
+}
+
+/* 内部配置 */
+.app-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ブランド名 */
+.app-header-brand {
+  font-weight: 600;
+  color: #212529;
+  text-decoration: none;
+  font-size: 1.25rem;
+}
+
+/* 右側まとめ */
+.app-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* ユーザー名とナビの間隔 */
+}
+
+/* ようこそメッセージ */
+.app-header-welcome {
+  margin: 0;
+  font-weight: 500;
+  color: #212529;
+}
+
+/* ナビ */
+.app-header-nav {}
+
+.app-header-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+/* リンク */
+.app-header-link {
+  text-decoration: none;
+  color: #212529;
+  font-weight: 500;
+}
+
+.app-header-link:hover {
+  text-decoration: underline;
+}
