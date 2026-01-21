@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # -----------------------------
   # ロール判定
   # -----------------------------
-  ROLES = %w[admin instructor user].freeze
+  ROLES = %w[admin instructor user guest].freeze
   validates :role, inclusion: { in: ROLES }
 
   def admin?; role == "admin"; end
