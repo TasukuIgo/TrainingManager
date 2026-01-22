@@ -1,6 +1,8 @@
 services:
   web:  # 開発中アプリ
     build: .
+    env_file:
+      - .env
     command: bundle exec bin/rails server -b 0.0.0.0
     volumes:
       - .:/rails
