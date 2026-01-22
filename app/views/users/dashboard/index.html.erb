@@ -1,19 +1,36 @@
-<h2 class="h4 mb-4">ダッシュボード</h2>
+<h2 class="h4 mb-4 text-center">ダッシュボード</h2>
 
-<div class="row mb-4">
+<div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
   <!-- 1: 参加予定研修 -->
-  <div class="col-md-4 mb-3">
-    <%= link_to '私の研修', users_plans_path, class: "btn btn-primary btn-block" %>
-  </div>
+  <%= link_to '予定表', users_training_schedules_path, class: "btn btn-primary btn-lg" %>
 
-  <!-- 2: 全研修一覧 -->
-  <div class="col-md-4 mb-3">
-    <%= link_to '全ての研修', users_training_schedules_path, class: "btn btn-success btn-block" %>
-  </div>
-
-  <!-- 3: 参加済み研修 -->
-  <div class="col-md-4 mb-3">
-    <%= link_to '参加済み研修', users_training_participations_path, class: "btn btn-secondary btn-block" %>
-  </div>
+  <!-- 2: 参加済み研修 -->
+  <%= link_to '参加済み研修', users_training_participations_path, class: "btn btn-secondary btn-lg" %>
 </div>
 
+
+#開発確認用
+
+<p>
+  ログイン中ユーザーID：
+  <%= current_user.id %>
+</p>
+
+<p>外部主キー
+  <%= current_user.external_user_id %>
+</p>
+
+<p>
+  ログインID（name）：
+  <%= current_user.name %>
+</p>
+
+<p>
+  表示名（real_name）：
+  <%= current_user.real_name.presence || "未設定" %>
+</p>
+
+<p>
+  ロール：
+  <%= current_user.role.presence || "未設定" %>
+</p>

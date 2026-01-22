@@ -1,64 +1,65 @@
-<%# _calendar.html.erb %>
-<div id="<%= calendar_id %>" class="calendar-loading"></div>
+<div class="calendar-legend mb-3">
+  <span class="legend-item">
+    <span class="legend-color plan"></span> プラン参加
+  </span>
+  <span class="legend-item">
+    <span class="legend-color training"></span> 研修参加
+  </span>
+  <span class="legend-item">
+    <span class="legend-color instructor"></span> 講師
+  </span>
+</div>
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css"
-  data-turbo-track="reload">
+<div id="<%= calendar_id %>" style="visibility: hidden;"></div>
 
-<style>
-  .calendar-loading {
-    visibility: hidden;
-  }
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" data-turbo-track="reload">
 
-<script
-  src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"
-  data-turbo-track="reload"></script>
+<%= stylesheet_link_tag 'calendar', 'data-turbo-track': 'reload' %>
 
-<script>
-document.addEventListener("turbo:load", function() {
-  const calendarEl = document.getElementById("<%= calendar_id %>");
-  if (!calendarEl) return;
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js" data-turbo-track="reload"></script>
 
-  // Ruby側で渡されたスケジュールを JS に変換
-  const events = <%= raw(
-    schedules.map { |s|
-      {
-        id: s.id,
-        title: s.training.title,
-        start: s.start_time&.iso8601,
-        end: s.end_time&.iso8601,
-        url: url_for_event.call(s)
-      }
-    }.to_json
-  ) %>;
+  <script>
+  document.addEventListener("turbo:load", function() {
+    const calendarEl = document.getElementById("<%= calendar_id %>");
+    if (!calendarEl) return;
 
-  // FullCalendar 初期化
-  const calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
-    locale: 'ja',
-    timeZone: 'Asia/Tokyo',
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
-    events: events,
-    eventClick(info) {
-      if (info.event.url) {
+    const events = <%= raw(
+      schedules.map { |schedule, role|
+        {
+          id: schedule.id,
+          title: schedule.training&.title || "未設定",
+          start: schedule.start_time&.iso8601,
+          end: schedule.end_time&.iso8601,
+          url: role == :other ? null : url_for_event.call(schedule),
+          classNames: [role ? role.to_s : "unassigned"]
+        }
+      }.to_json
+    ) %>;
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: "dayGridMonth",
+      locale: "ja",
+      timeZone: "Asia/Tokyo",
+
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay"
+      },
+
+      events: events,
+
+      eventClick(info) {
+        if (!info.event.url) {
+          info.jsEvent.preventDefault();
+          return;
+        }
         info.jsEvent.preventDefault();
         window.location.href = info.event.url;
       }
-    },
-    eventTimeFormat: {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    }
-  });
+    });
 
-  calendar.render();
-  calendarEl.style.visibility = "visible"; // 描画後に表示
-});
-</script>
+    calendar.render();
+    calendarEl.style.visibility = "visible";
+  });
+  </script>

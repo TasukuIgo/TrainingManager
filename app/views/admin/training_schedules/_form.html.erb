@@ -42,8 +42,7 @@
   <div class="mb-3">
     <%= f.label :instructor_id, "講師", class: "form-label" %>
     <%= f.collection_select :instructor_id, @instructors, :id, :name,
-          { prompt: "未定" }, class: "form-select" %>
-    <%# ここはモデルの属性ではなく params[:training_schedule][:instructor_id] で利用 %>
+      { prompt: "未定" }, class: "form-select" %>
   </div>
 
 

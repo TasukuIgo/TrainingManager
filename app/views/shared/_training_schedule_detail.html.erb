@@ -7,7 +7,7 @@
 
     <p>
       <strong>日時:</strong>
-      <%= training_schedule.start_time.strftime("%Y/%m/%d %H:%M") rescue "未設定" %>
+      <%= training_schedule.start_time.present? ? training_schedule.start_time.strftime("%Y/%m/%d %H:%M") : "未設定" %>
       <% if training_schedule.end_time.present? %>
         ～ <%= training_schedule.end_time.strftime("%H:%M") %>
       <% end %>
@@ -24,7 +24,7 @@
     <% if training_schedule.instructors.any? %>
       <ul class="list-group list-group-flush">
         <% training_schedule.instructors.each do |instructor| %>
-          <li class="list-group-item"><%= instructor.name || "未設定" %></li>
+         <li class="list-group-item"><%= instructor.user&.name || "未設定" %></li>
         <% end %>
       </ul>
     <% else %>
@@ -37,16 +37,53 @@
 <div class="card mb-4">
   <div class="card-body">
     <h5 class="card-title">参加者</h5>
-    <% if training_schedule.participants.any? %>
+<% if training_schedule.participants.any? %>
+  <ul class="list-group list-group-flush">
+    <% training_schedule.participants.uniq { |p| p.id }.each do |participant| %>
+      <li class="list-group-item">
+        <%= participant.name.presence || "未設定" %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="text-muted mb-0">未定</p>
+<% end %>
+  </div>
+</div>
+
+<!-- PDF資料 -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">研修資料</h5>
+
+    <% training = training_schedule.training %>
+    <% if training&.materials&.attached? && training.materials.any? %>
       <ul class="list-group list-group-flush">
-        <% training_schedule.participants.each do |participant| %>
-          <li class="list-group-item">
-            <%= participant.name || "未設定" %>
+        <% training.materials.each do |file| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><%= file.filename.to_s %></span>
+
+            <div class="btn-group btn-group-sm" role="group">
+              <!-- ブラウザで開く -->
+              <%= link_to "開く", rails_blob_path(file, disposition: "inline"),
+                          target: "_blank", class: "btn btn-outline-primary" %>
+
+              <!-- ダウンロード -->
+              <%= link_to "ダウンロード", rails_blob_path(file, disposition: "attachment"),
+                          class: "btn btn-outline-success" %>
+            </div>
           </li>
         <% end %>
       </ul>
     <% else %>
-      <p class="text-muted mb-0">未定</p>
+      <p class="text-muted mb-0">
+        <% if training.nil? %>
+          研修情報が未設定です
+        <% else %>
+          資料はまだアップロードされていません
+        <% end %>
+      </p>
     <% end %>
   </div>
 </div>
+

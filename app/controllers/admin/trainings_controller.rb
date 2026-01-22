@@ -1,5 +1,7 @@
 class Admin::TrainingsController < ApplicationController
 
+  before_action :require_login
+
 # 新規作成ページ用のnewアクション
   def new
     @training = Training.new
@@ -18,7 +20,7 @@ class Admin::TrainingsController < ApplicationController
   end
 
   def index
-    @trainings = Training.order(created_at: :desc)
+    @trainings = Training.order(created_at: :asc)
   end
 
   def show
@@ -54,6 +56,6 @@ class Admin::TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:title, :description)
+    params.require(:training).permit(:title, :description, materials: [])
   end
 end

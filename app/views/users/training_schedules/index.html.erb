@@ -4,7 +4,7 @@
 
 <%= render "shared/calendar",
   calendar_id: "user-training-schedule-calendar",
-  schedules: @training_schedules,
+  schedules: @calendar_schedules,
   url_for_event: ->(schedule) {
     users_training_schedule_path(schedule)
   }

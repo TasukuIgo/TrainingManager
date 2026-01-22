@@ -28,3 +28,33 @@
     </div>
   </div>
 </div>
+
+<hr>
+
+<% if current_user.admin? %>
+  <div class="mt-4 text-center">
+    <%= link_to "ユーザー一覧（管理者用）", admin_users_list_index_path,
+                class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>
+
+#開発確認用
+<p>
+  ログイン中ユーザーID：
+  <%= current_user.id %>
+</p>
+
+<p>
+  ログインID（name）：
+  <%= current_user.name %>
+</p>
+
+<p>
+  表示名（real_name）：
+  <%= current_user.real_name.presence || "未設定" %>
+</p>
+
+<p>
+  ロール：
+  <%= current_user.role.presence || "未設定" %>
+</p>

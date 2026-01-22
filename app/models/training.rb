@@ -1,6 +1,12 @@
 class Training < ApplicationRecord
   has_many :training_schedules
 
+  #PDF用 EC2のため容量制限
+  has_many_attached :materials
+  validates :materials,
+    content_type: ['application/pdf'],
+    size: { less_than: 20.megabytes, message: "は20MB以下にしてください" }
+
   #タイトル空白NF
   validates :title, :description, presence: true
 

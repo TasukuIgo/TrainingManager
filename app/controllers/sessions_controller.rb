@@ -6,33 +6,58 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(name: params[:name])
-    if user&.authenticate(params[:password])
-      session[:user_id] = user.id
+    require 'net/http'
+    require 'uri'
+    require 'json'
 
-      # ロール別にダッシュボードへリダイレクト
+    uri = URI("http://host.docker.internal:11000/api/users/authenticate")
+    req = Net::HTTP::Post.new(uri)
+    req["X-Api-Key"] = "testkey"
+    req["Content-Type"] = "application/json"
+    req.body = {
+      username: params[:login_name],
+      password: params[:password]
+    }.to_json
+
+    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+      http.request(req)
+    end
+
+    if res.is_a?(Net::HTTPSuccess)
+      user_data = JSON.parse(res.body)
+
+      # ここが修正ポイント
+      user = User.find_or_initialize_by(
+        external_user_id: user_data["id"]
+      )
+
+      user.real_name = user_data["name"]
+      user.name      = user_data["username"]
+      user.role ||= "user"
+
+      user.save!
+
+      session[:user_id] = user.id
       redirect_to dashboard_path_by_role, notice: "ログイン成功"
     else
-      flash.now[:alert] = "名前かパスワードが間違っています"
-      render :new
+      flash.now[:alert] = "ログイン失敗"
+      render :new, status: :unauthorized
     end
+
+  rescue StandardError => e
+    Rails.logger.error("API ERROR: #{e.message}")
+    flash.now[:alert] = "API接続に失敗しました"
+    render :new, status: :internal_server_error
   end
 
   def destroy
-    session.delete(:user_id)
-    redirect_to login_path, notice: "ログアウトしました"
+    session[:user_id] = nil
+    redirect_to dashboard_path_by_role, notice: "ログアウトしました"
   end
-
 
   private
 
-  #ロールによる遷移先分岐
   def dashboard_path_by_role
-    if current_user.admin?
-      admin_root_path   # 管理者用のトップページ
-    else
-      users_root_path   # 一般ユーザー用のトップページ
-    end
+    current_user.admin? ? admin_root_path : users_root_path
   end
-
 end

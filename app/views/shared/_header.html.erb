@@ -1,66 +1,26 @@
 <header class="app-header">
   <div class="app-header-container">
+    <!-- ブランド -->
     <%= link_to 'Training Manager', dashboard_path_by_role, class: 'app-header-brand' %>
 
-    <% if current_user %>
-      <nav class="app-header-nav">
-        <ul class="app-header-list">
-          <li>
-            <%= link_to 'ログアウト',
-                        logout_path,
-                        method: :delete,
-                        data: { turbo: false },
-                        class: 'app-header-link' %>
-          </li>
-        </ul>
-      </nav>
-    <% end %>
+    <!-- 右側のユーザー情報＆ナビ -->
+    <div class="app-header-right">
+      <% if current_user %>
+        <p class="app-header-welcome">
+          ようこそ、<%= current_user.real_name.presence || current_user.name %> さん
+        </p>
+        <nav class="app-header-nav">
+          <ul class="app-header-list">
+            <li>
+              <%= link_to 'ログアウト',
+                          logout_path,
+                          method: :delete,
+                          data: { turbo: false },
+                          class: 'app-header-link' %>
+            </li>
+          </ul>
+        </nav>
+      <% end %>
+    </div>
   </div>
 </header>
-
-<style>
-/* コンテナ */
-.app-header {
-  background-color: rgba(108, 117, 125, 0.25); /* bg-secondary bg-opacity-25 */
-  border-bottom: 1px solid #dee2e6; /* border-bottom */
-  padding: 0.5rem 1rem;
-  font-family: sans-serif;
-}
-
-/* 内部配置 */
-.app-header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ブランド名 */
-.app-header-brand {
-  font-weight: 600; /* fw-semibold */
-  color: #212529; /* text-dark */
-  text-decoration: none;
-  font-size: 1.25rem;
-}
-
-/* ナビゲーション */
-.app-header-nav {}
-
-.app-header-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 1rem;
-}
-
-/* リンク */
-.app-header-link {
-  text-decoration: none;
-  color: #212529;
-  font-weight: 500;
-}
-
-.app-header-link:hover {
-  text-decoration: underline;
-}
-</style>

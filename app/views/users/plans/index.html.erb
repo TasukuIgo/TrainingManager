@@ -3,10 +3,9 @@
 <% end %>
 
 <%= render "shared/calendar",
-  calendar_id: "user-plans-calendar",
-  schedules: @my_schedules,
-  url_for_event: ->(schedule) {
-    plan_id = schedule.plans.first&.id
-    plan_id ? users_plan_path(plan_id) : nil
-  }
+    calendar_id: "user-plans-calendar",
+    schedules: @schedules_with_roles,
+    url_for_event: ->(schedule, role=nil) { 
+      users_plan_path(schedule.plans.first) if schedule.plans.any? && role == :plan_participant
+    }
 %>
