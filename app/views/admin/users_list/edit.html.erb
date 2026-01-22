@@ -3,7 +3,7 @@
 <%= form_with model: @user, url: admin_users_list_path(@user), method: :patch, local: true, html: { class: "mb-4" } do |f| %>
   <div class="mb-3">
     <%= f.label :role, "ロール", class: "form-label" %>
-    <%= f.select :role, [["管理者", "admin"], ["講師", "instructor"], ["一般", "user"]],
+    <%= f.select :role, [["管理者", "admin"], ["講師", "instructor"], ["一般ユーザー", "user"]],
                  {}, class: "form-select" %>
   </div>
 

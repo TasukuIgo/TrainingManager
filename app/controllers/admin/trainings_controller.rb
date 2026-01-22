@@ -56,6 +56,6 @@ class Admin::TrainingsController < ApplicationController
   private
 
   def training_params
-    params.require(:training).permit(:title, :description)
+    params.require(:training).permit(:title, :description, materials: [])
   end
 end

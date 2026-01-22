@@ -20,6 +20,25 @@
     <%= f.text_area :description, rows: 5, class: "form-control" %>
   </div>
 
+  <!-- ここからPDFアップロード追加 -->
+  <div class="mb-3">
+    <%= f.label :materials, "研修資料（PDF）", class: "form-label" %>
+    <%= f.file_field :materials, multiple: true, accept: "application/pdf", class: "form-control" %>
+
+    <% if @training.materials.attached? %>
+      <p class="mt-2">既存の資料：</p>
+      <ul>
+        <% @training.materials.each do |file| %>
+          <li>
+            <%= link_to file.filename.to_s,
+                        rails_blob_path(file, disposition: "attachment") %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+  <!-- ここまでPDFアップロード -->
+
   <div class="mt-3 d-flex gap-2">
     <%= f.submit @training.persisted? ? "更新する" : "作成する",
         class: "btn btn-primary" %>
@@ -28,7 +47,7 @@
         admin_trainings_path,
         class: "btn btn-secondary" %>
 
-    <%# 🔥 Edit のみ削除 %>
+    <%#  Edit のみ削除 %>
     <% if @training.persisted? %>
       <%= link_to "削除",
           admin_training_path(@training),

@@ -64,3 +64,5 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'pry-rails'
 
 gem "faraday"
+
+gem 'active_storage_validations'

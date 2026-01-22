@@ -5,6 +5,7 @@ services:
     volumes:
       - .:/rails
       - bundle:/usr/local/bundle
+      - ./storage:/app/storage
     ports:
       - "3001:3000"  # ホスト側 3001 → コンテナ側 3000
     environment:

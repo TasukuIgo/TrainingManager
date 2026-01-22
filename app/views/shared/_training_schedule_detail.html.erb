@@ -50,3 +50,40 @@
 <% end %>
   </div>
 </div>
+
+<!-- PDF資料 -->
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">研修資料</h5>
+
+    <% training = training_schedule.training %>
+    <% if training&.materials&.attached? && training.materials.any? %>
+      <ul class="list-group list-group-flush">
+        <% training.materials.each do |file| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><%= file.filename.to_s %></span>
+
+            <div class="btn-group btn-group-sm" role="group">
+              <!-- ブラウザで開く -->
+              <%= link_to "開く", rails_blob_path(file, disposition: "inline"),
+                          target: "_blank", class: "btn btn-outline-primary" %>
+
+              <!-- ダウンロード -->
+              <%= link_to "ダウンロード", rails_blob_path(file, disposition: "attachment"),
+                          class: "btn btn-outline-success" %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted mb-0">
+        <% if training.nil? %>
+          研修情報が未設定です
+        <% else %>
+          資料はまだアップロードされていません
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+</div>
+

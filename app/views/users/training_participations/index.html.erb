@@ -13,7 +13,7 @@
       </thead>
 
       <tbody>
-        <% @training_participations.each do |tp| %>
+        <% @training_participations.uniq { |tp| tp.training_schedule_id }.each do |tp| %>
           <% schedule = tp.training_schedule %>
 
           <tr>

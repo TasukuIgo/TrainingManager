@@ -47,5 +47,6 @@ class Users::TrainingSchedulesController < ApplicationController
   def show
     @training_schedule = TrainingSchedule.find(params[:id])
     @participants = @training_schedule.participants
+    @materials = @training&.materials || []
   end
 end

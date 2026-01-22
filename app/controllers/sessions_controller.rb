@@ -6,18 +6,18 @@ class SessionsController < ApplicationController
   end
 
   def create
-    binding.pry
     require 'net/http'
     require 'uri'
     require 'json'
 
-    # Docker Compose 内の Fundely コンテナに向ける
     uri = URI("http://host.docker.internal:11000/api/users/authenticate")
     req = Net::HTTP::Post.new(uri)
-    req["X-Api-Key"] = "testkey"  # ←直接書く
+    req["X-Api-Key"] = "testkey"
     req["Content-Type"] = "application/json"
-    req.body = { username: params[:login_name], password: params[:password] }.to_json
-    binding.pry
+    req.body = {
+      username: params[:login_name],
+      password: params[:password]
+    }.to_json
 
     res = Net::HTTP.start(uri.hostname, uri.port) do |http|
       http.request(req)
@@ -26,24 +26,28 @@ class SessionsController < ApplicationController
     if res.is_a?(Net::HTTPSuccess)
       user_data = JSON.parse(res.body)
 
-      user = User.find_or_initialize_by(id: user_data["id"])
-      user.external_user_id = user_data["id"]
+      # ここが修正ポイント
+      user = User.find_or_initialize_by(
+        external_user_id: user_data["id"]
+      )
+
       user.real_name = user_data["name"]
       user.name      = user_data["username"]
-      user.role      = user_data["role"]
+      user.role ||= "user"
+
       user.save!
 
       session[:user_id] = user.id
       redirect_to dashboard_path_by_role, notice: "ログイン成功"
     else
       flash.now[:alert] = "ログイン失敗"
-      render :new
+      render :new, status: :unauthorized
     end
 
   rescue StandardError => e
     Rails.logger.error("API ERROR: #{e.message}")
     flash.now[:alert] = "API接続に失敗しました"
-    render :new
+    render :new, status: :internal_server_error
   end
 
   def destroy
