@@ -1,5 +1,5 @@
 services:
-  web:  # 開発中アプリ
+  web:
     build: .
     env_file:
       - .env
@@ -8,14 +8,15 @@ services:
       - .:/rails
       - bundle:/usr/local/bundle
       - ./storage:/app/storage
-    ports:
-      - "3001:3000"  # ホスト側 3001 → コンテナ側 3000
+    expose:
+      - "3000"  # Nginxからアクセスするだけなので expose でOK
     environment:
       RAILS_ENV: development
       DATABASE_HOST: db
       DATABASE_USER: postgres
       DATABASE_PASSWORD: password
       DATABASE_NAME: training_manager_development
+
   db:
     image: postgres:15
     environment:
@@ -25,6 +26,16 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"  # ローカルブラウザからアクセス
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - web
+
 volumes:
   db-data: {}
   bundle: {}
+
