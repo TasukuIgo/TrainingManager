@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     require 'uri'
     require 'json'
 
-    # 環境変数から API エンドポイントとキーを取得
+    # 環境変数からAPIエンドポイントとキーを取得
     api_endpoint = ENV.fetch("FD_API_ENDPOINT")
     api_key      = ENV.fetch("FD_API_KEY")
 
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
     req["X-Api-Key"] = api_key
     req["Content-Type"] = "application/json"
 
-    # リクエストボディ設定
+    # 送信内容設定
     req.body = {
       username: params[:login_name],
       password: params[:password]
@@ -49,7 +49,7 @@ class SessionsController < ApplicationController
       flash.now[:alert] = "ログイン失敗"
       render :new, status: :unauthorized
     end
-
+    
   rescue StandardError => e
     Rails.logger.error("API ERROR: #{e.message}")
     flash.now[:alert] = "API接続に失敗しました"

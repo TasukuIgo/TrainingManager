@@ -9,7 +9,7 @@ services:
       - bundle:/usr/local/bundle
       - ./storage:/app/storage
     expose:
-      - "3000"  # Nginxからアクセスするだけなので expose でOK
+      - "3000" 
     environment:
       RAILS_ENV: development
       DATABASE_HOST: db
@@ -31,7 +31,7 @@ services:
     ports:
       - "8080:80"  # ローカルブラウザからアクセス
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
 
