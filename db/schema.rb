@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_22_061502) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_23_045650) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,6 +58,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_22_061502) do
     t.bigint "user_id", null: false
     t.index ["training_schedule_id"], name: "index_instructors_on_training_schedule_id"
     t.index ["user_id"], name: "index_instructors_on_user_id"
+  end
+
+  create_table "materials", force: :cascade do |t|
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "file_path", null: false
+    t.string "original_filename", null: false
+    t.bigint "training_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["training_id"], name: "index_materials_on_training_id"
   end
 
   create_table "plan_participations", force: :cascade do |t|
@@ -131,6 +141,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_22_061502) do
   add_foreign_key "created_plans", "training_schedules"
   add_foreign_key "instructors", "training_schedules"
   add_foreign_key "instructors", "users"
+  add_foreign_key "materials", "trainings"
   add_foreign_key "plan_participations", "plans"
   add_foreign_key "plan_participations", "users"
   add_foreign_key "training_participations", "training_schedules"

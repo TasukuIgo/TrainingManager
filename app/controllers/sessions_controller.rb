@@ -10,15 +10,25 @@ class SessionsController < ApplicationController
     require 'uri'
     require 'json'
 
-    uri = URI("http://host.docker.internal:11000/api/users/authenticate")
+    # 環境変数からAPIエンドポイントとキーを取得
+    api_endpoint = ENV.fetch("FD_API_ENDPOINT")
+    api_key      = ENV.fetch("FD_API_KEY")
+
+    # URI 作成
+    uri = URI("#{api_endpoint}/users/authenticate")
+
+    # POST リクエスト作成
     req = Net::HTTP::Post.new(uri)
-    req["X-Api-Key"] = "testkey"
+    req["X-Api-Key"] = api_key
     req["Content-Type"] = "application/json"
+
+    # 送信内容設定
     req.body = {
       username: params[:login_name],
       password: params[:password]
     }.to_json
 
+    # リクエスト送信
     res = Net::HTTP.start(uri.hostname, uri.port) do |http|
       http.request(req)
     end
@@ -26,15 +36,11 @@ class SessionsController < ApplicationController
     if res.is_a?(Net::HTTPSuccess)
       user_data = JSON.parse(res.body)
 
-      # ここが修正ポイント
-      user = User.find_or_initialize_by(
-        external_user_id: user_data["id"]
-      )
-
+      # 外部IDでユーザー取得 or 作成
+      user = User.find_or_initialize_by(external_user_id: user_data["id"])
       user.real_name = user_data["name"]
       user.name      = user_data["username"]
       user.role ||= "user"
-
       user.save!
 
       session[:user_id] = user.id
@@ -43,7 +49,7 @@ class SessionsController < ApplicationController
       flash.now[:alert] = "ログイン失敗"
       render :new, status: :unauthorized
     end
-
+    
   rescue StandardError => e
     Rails.logger.error("API ERROR: #{e.message}")
     flash.now[:alert] = "API接続に失敗しました"

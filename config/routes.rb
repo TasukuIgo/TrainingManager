@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :training_schedules, only: [:index, :show]
     resources :training_participations, only: [:index, :show]
     resources :plans, only: [:index, :show]
+    resources :materials, only: [:create, :edit, :update]
   end
 
   # =====================

@@ -1,12 +1,9 @@
 class Users::TrainingSchedulesController < ApplicationController
-  
   before_action :require_login
+  before_action :set_training_schedule, only: [:show]
 
   def index
-    # すべての研修スケジュール
-    all_schedules = TrainingSchedule
-                      .includes(:training)
-                      .order(start_time: :asc)
+    all_schedules = TrainingSchedule.includes(:training).order(start_time: :asc)
 
     # プラン参加
     plan_ids = TrainingSchedule
@@ -23,9 +20,7 @@ class Users::TrainingSchedulesController < ApplicationController
                      .pluck(:id)
 
     # 講師
-    instructor_ids = current_user
-                       .instructed_training_schedules
-                       .pluck(:id)
+    instructor_ids = current_user.instructed_training_schedules.pluck(:id)
 
     # role 付きでまとめる
     @calendar_schedules = all_schedules.map do |s|
@@ -45,8 +40,16 @@ class Users::TrainingSchedulesController < ApplicationController
   end
 
   def show
-    @training_schedule = TrainingSchedule.find(params[:id])
+    # 研修スケジュールを取得
+    # before_actionで set_training_schedule が呼ばれる
     @participants = @training_schedule.participants
+    @training = @training_schedule.training
     @materials = @training&.materials || []
+  end
+
+  private
+
+  def set_training_schedule
+    @training_schedule = TrainingSchedule.find(params[:id])
   end
 end

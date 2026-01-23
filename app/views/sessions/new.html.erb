@@ -5,7 +5,7 @@
         <div class="card-body">
           <h3 class="card-title text-center mb-4">ログイン</h3>
 
-          <%= form_with url: login_path, local: true do %>
+          <%= form_with url: login_path, data: { turbo: false } do |f| %>
             <div class="mb-3">
               <label class="form-label">ID</label>
               <%= text_field_tag :login_name, nil,
