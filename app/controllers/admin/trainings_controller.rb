@@ -1,61 +1,89 @@
 class Admin::TrainingsController < ApplicationController
-
   before_action :require_login
+  before_action :set_training, only: %i[show edit update destroy]
 
-# 新規作成ページ用のnewアクション
   def new
     @training = Training.new
   end
 
-# 
   def create
-    @training = Training.new(training_params)
-    
-    if @training.save
-      redirect_to admin_training_path(@training), 
-      notice: "研修を作成しました。"
-    else
-      render :new, status: :unprocessable_entity
+    @training = Training.new(training_params) # materials は除く
+
+    ActiveRecord::Base.transaction do
+      @training.save!
+      save_materials(@training) if params[:training][:materials].present?
+    end
+
+    redirect_to admin_training_path(@training), notice: "研修を作成しました"
+
+  rescue => e
+    Rails.logger.error(e)
+    respond_to do |format|
+      format.html { render :new, status: :unprocessable_entity }
+      format.turbo_stream { render :new, status: :unprocessable_entity }
     end
   end
+
 
   def index
     @trainings = Training.order(created_at: :asc)
   end
 
   def show
-    @training = Training.find(params[:id])
   end
 
   def edit
-    @training = Training.find(params[:id])
   end
 
   def update
-    @training = Training.find(params[:id])
+    ActiveRecord::Base.transaction do
+      @training.update!(training_params)
 
-    if @training.update(training_params)
-      redirect_to admin_training_path(@training),
-      notice: "研修内容を更新しました。"
-    else
-      render :edit, status: :unprocessable_entity
+      save_materials(@training)
     end
+
+    redirect_to admin_training_path(@training), notice: "研修内容を更新しました"
+
+  rescue => e
+    Rails.logger.error(e)
+    render :edit, status: :unprocessable_entity
   end
 
-  #研修を削除する際、それを含むスケジュールがある場合に禁止
   def destroy
-    @training = Training.find(params[:id])
-    if @training.destroy
-      redirect_to admin_trainings_path, notice: "研修を削除しました"
-    else
-      redirect_to admin_trainings_path,
-                alert: @training.errors.full_messages.join("\n")
-    end
+    @training.destroy
+    redirect_to admin_trainings_path, notice: "研修を削除しました"
   end
 
   private
 
-  def training_params
-    params.require(:training).permit(:title, :description, materials: [])
+  def set_training
+    @training = Training.find(params[:id])
   end
+
+  def training_params
+    params.require(:training).permit(:title, :description)
+  end
+
+
+  def save_materials(training)
+    return unless params[:training][:materials].present?
+
+    params[:training][:materials].reject(&:blank?).each do |uploaded_file|
+      save_dir = Rails.root.join("storage/materials", training.id.to_s)
+      FileUtils.mkdir_p(save_dir)
+
+      file_path = save_dir.join(uploaded_file.original_filename)
+
+      File.open(file_path, "wb") do |file|
+        file.write(uploaded_file.read)
+      end
+
+      training.materials.create!(
+        file_path: file_path.to_s,
+        original_filename: uploaded_file.original_filename, # ← ここを修正
+        content_type: uploaded_file.content_type
+      )
+    end
+  end
+
 end
