@@ -8,8 +8,8 @@ services:
       - .:/rails
       - bundle:/usr/local/bundle
       - ./storage:/app/storage
-    expose:
-      - "3000"
+    ports:
+        - "3000:3000"
     environment:
       RAILS_ENV: production
       APP_DATABASE_PASSWORD: password  # database.yml に合わせる
