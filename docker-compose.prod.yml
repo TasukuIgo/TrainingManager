@@ -1,0 +1,41 @@
+services:
+  web:
+    build: .
+    env_file:
+      - .env.production
+    command: bundle exec puma -C config/puma.rb
+    volumes:
+      - .:/rails
+      - bundle:/usr/local/bundle
+      - ./storage:/app/storage
+    expose:
+      - "3000"
+    environment:
+      RAILS_ENV: production
+      DATABASE_HOST: db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: training_manager_production
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: training_manager_production
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"   # ← 本番は 80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+
+volumes:
+  db-data: {}
+  bundle: {}
+
