@@ -13,9 +13,20 @@
       <% end %>
     </p>
 
-    <p><strong>会場:</strong> <%= training_schedule.room&.name || "未定" %></p>
-  </div>
-</div>
+    <!-- 会場 -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title">会場</h5>
+        <p><strong>会場名:</strong> <%= training_schedule.room&.name || "未定" %></p>
+
+        <%# 固定画像 rooms.png を表示 %>
+        <%= image_tag "rooms.png",
+              alt: training_schedule.room&.name || "会場画像",
+              class: "img-fluid mt-2",
+              style: "max-width: 400px; height: auto;" %>
+      </div>
+    </div>
+
 
 <!-- 講師 -->
 <div class="card mb-4">

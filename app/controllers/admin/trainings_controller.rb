@@ -1,45 +1,54 @@
 class Admin::TrainingsController < ApplicationController
+  # ログイン必須
   before_action :require_login
+  # show, edit, update, destroy の対象研修を取得
   before_action :set_training, only: %i[show edit update destroy]
 
+  # 新規作成フォーム
   def new
     @training = Training.new
   end
 
+  # 作成処理
   def create
-    @training = Training.new(training_params) # materials は除く
+    @training = Training.new(training_params) # materials は params から除く
 
+    # --- 複数テーブルを同時に更新する場合は transaction でまとめる ---
     ActiveRecord::Base.transaction do
-      @training.save!
-      save_materials(@training) if params[:training][:materials].present?
+      @training.save! # 保存できなければ例外
+      save_materials(@training) if params[:training][:materials].present? # ファイル保存
     end
 
     redirect_to admin_training_path(@training), notice: "研修を作成しました"
 
   rescue => e
-    Rails.logger.error(e)
+    Rails.logger.error(e) # エラー内容をログに出力
     respond_to do |format|
       format.html { render :new, status: :unprocessable_entity }
       format.turbo_stream { render :new, status: :unprocessable_entity }
     end
   end
 
-
+  # 一覧表示
   def index
     @trainings = Training.order(created_at: :asc)
   end
 
+  # 詳細表示
   def show
+    # set_training で取得済み
   end
 
+  # 編集フォーム
   def edit
+    # set_training で取得済み
   end
 
+  # 更新処理
   def update
     ActiveRecord::Base.transaction do
-      @training.update!(training_params)
-
-      save_materials(@training)
+      @training.update!(training_params) # 更新できなければ例外
+      save_materials(@training)          # ファイル保存
     end
 
     redirect_to admin_training_path(@training), notice: "研修内容を更新しました"
@@ -49,6 +58,7 @@ class Admin::TrainingsController < ApplicationController
     render :edit, status: :unprocessable_entity
   end
 
+  # 削除処理
   def destroy
     @training.destroy
     redirect_to admin_trainings_path, notice: "研修を削除しました"
@@ -56,34 +66,40 @@ class Admin::TrainingsController < ApplicationController
 
   private
 
+  # 編集・削除対象の研修を取得
   def set_training
-    @training = Training.find(params[:id])
+    @training = Training.find(params[:id]) # id で検索
   end
 
+  # 許可されたパラメータのみ受け取る（セキュリティ対策）
   def training_params
     params.require(:training).permit(:title, :description)
   end
 
-
+  # --- ファイル保存処理 ---
   def save_materials(training)
     return unless params[:training][:materials].present?
 
+    # 空のファイルを除いてループ
     params[:training][:materials].reject(&:blank?).each do |uploaded_file|
+      # 保存先ディレクトリを作成
       save_dir = Rails.root.join("storage/materials", training.id.to_s)
       FileUtils.mkdir_p(save_dir)
 
+      # ファイルパスを決定
       file_path = save_dir.join(uploaded_file.original_filename)
 
+      # ファイルを書き込み
       File.open(file_path, "wb") do |file|
         file.write(uploaded_file.read)
       end
 
+      # DB に保存
       training.materials.create!(
-        file_path: file_path.to_s,
-        original_filename: uploaded_file.original_filename, # ← ここを修正
-        content_type: uploaded_file.content_type
+        file_path: file_path.to_s,                        # 実際の保存場所
+        original_filename: uploaded_file.original_filename, # アップロード元のファイル名
+        content_type: uploaded_file.content_type          # ファイルの種類
       )
     end
   end
-
 end
