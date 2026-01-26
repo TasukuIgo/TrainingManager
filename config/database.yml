@@ -16,10 +16,13 @@ test:
 
 production:
   primary: &primary_production
-    <<: *default
-    database: app_production
-    username: app
-    password: <%= ENV["APP_DATABASE_PASSWORD"] %>
+    adapter: postgresql
+    encoding: unicode
+    host: <%= ENV.fetch("DATABASE_HOST") %>
+    username: <%= ENV.fetch("DATABASE_USER") %> # 環境変数から取得
+    password: <%= ENV.fetch("APP_DATABASE_PASSWORD") %> # ここだけ正しく指定
+    database: <%= ENV.fetch("DATABASE_NAME") %>
+    pool: 5
   cache:
     <<: *primary_production
     database: app_production_cache
