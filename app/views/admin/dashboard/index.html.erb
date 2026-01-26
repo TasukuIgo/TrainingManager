@@ -8,9 +8,15 @@
         研修（Training）
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><%= link_to "登録済み研修一覧", admin_trainings_path, class: "btn btn-outline-primary w-100 text-start" %></li>
-        <li class="list-group-item"><%= link_to "研修作成", new_admin_training_path, class: "btn btn-outline-success w-100 text-start" %></li>
-        <li class="list-group-item"><%= link_to "カレンダー", admin_training_schedules_path, class: "btn btn-outline-info w-100 text-start" %></li>
+        <li class="list-group-item">
+          <%= link_to "研修作成", new_admin_training_path, class: "btn btn-outline-success w-100 text-start" %>
+        </li>
+        <li class="list-group-item">
+          <%= link_to "研修セット", new_admin_training_schedule_path, class: "btn btn-outline-success w-100 text-start" %>
+        </li>
+        <li class="list-group-item">
+          <%= link_to "登録済み研修一覧", admin_trainings_path, class: "btn btn-outline-primary w-100 text-start" %>
+        </li>
       </ul>
     </div>
   </div>
@@ -22,8 +28,12 @@
         プラン（Plan）
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"><%= link_to "プラン一覧", admin_plans_path, class: "btn btn-outline-primary w-100 text-start" %></li>
-        <li class="list-group-item"><%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-primary w-100" %></li>
+        <li class="list-group-item">
+          <%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-outline-success w-100 text-start" %>
+        </li>
+        <li class="list-group-item">
+          <%= link_to "プラン一覧", admin_plans_path, class: "btn btn-outline-primary w-100 text-start" %>
+        </li>
       </ul>
     </div>
   </div>
@@ -31,12 +41,19 @@
 
 <hr>
 
-<% if current_user.admin? %>
-  <div class="mt-4 text-center">
-    <%= link_to "ユーザー一覧（管理者用）", admin_users_list_index_path,
-                class: "btn btn-primary btn-lg" %>
-  </div>
-<% end %>
+<div class="mt-4 text-center d-flex justify-content-center gap-3 flex-wrap">
+  <%= link_to "研修カレンダー",
+      admin_training_schedules_path,
+      class: "btn btn-info btn-lg" %>
+
+  <% if current_user.admin? %>
+    <%= link_to "ユーザー一覧（管理者用）",
+        admin_users_list_index_path,
+        class: "btn btn-primary btn-lg" %>
+  <% end %>
+</div>
+
+<%= render "how_to_use" %>
 
 #開発確認用
 <p>
