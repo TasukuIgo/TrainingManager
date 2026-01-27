@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
     }.to_json
 
     # リクエスト送信
-    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
       http.request(req)
     end
 
