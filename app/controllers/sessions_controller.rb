@@ -45,6 +45,8 @@ class SessionsController < ApplicationController
       user.name      = user_data["username"]
       user.role ||= "user"  # 初回ログイン時は必ずUserロールの割り当てになるため必要に応じてAdminアカウントから変更
 
+      user.save!
+
       # セッションにユーザーIDを保存（ログイン状態保持）
       session[:user_id] = user.id
       redirect_to dashboard_path_by_role, notice: "ログイン成功"
