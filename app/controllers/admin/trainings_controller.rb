@@ -47,16 +47,27 @@ class Admin::TrainingsController < ApplicationController
   # 更新処理
   def update
     ActiveRecord::Base.transaction do
-      @training.update!(training_params) # 更新できなければ例外
-      save_materials(@training)          # ファイル保存
-  end
+      @training.update!(training_params) # 更新
+      save_materials(@training)          # 新規アップロード
 
-    redirect_to admin_training_path(@training), notice: "研修内容を更新しました"
+      # 削除フラグがあれば削除
+      if params[:deleted_material_ids].present?
+        params[:deleted_material_ids].each do |id|
+          material = @training.materials.find(id)
+          file_path = Rails.root.join("public", "materials", @training.id.to_s, material.original_filename)
+          File.delete(file_path) if File.exist?(file_path)
+          material.destroy
+        end
+      end
+    end
+
+    redirect_to admin_training_path(@training), notice: "研修を更新しました"
 
   rescue => e
     Rails.logger.error(e)
     render :edit, status: :unprocessable_entity
   end
+
 
   # 削除処理
   def destroy
