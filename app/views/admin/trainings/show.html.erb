@@ -13,19 +13,19 @@
     </p>
   </div>
   <div>
-     <% if @training.materials.any? %>
-        <p class="mt-2">既存の資料：</p>
-        <ul>
-          <% @training.materials.each do |material| %>
-            <li class="d-flex align-items-center gap-2">
-              <%= link_to material.original_filename,
-                    material.file_path,
-                    target: "_blank" %>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
+    <% if @training.materials.any? %>
+      <p class="mt-2">既存の資料：</p>
+      <ul>
+        <% @training.materials.each do |material| %>
+          <li class="d-flex align-items-center gap-2">
+            <%= link_to material.original_filename,
+                  "/materials/#{@training.id}/#{material.original_filename}",
+                  target: "_blank" %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
 </div>
 
 <div class="mb-3">
