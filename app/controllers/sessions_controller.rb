@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
     }.to_json
 
     # リクエスト送信
-    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+    res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
       http.request(req)
     end
 
@@ -44,6 +44,8 @@ class SessionsController < ApplicationController
       user.real_name = user_data["name"]
       user.name      = user_data["username"]
       user.role ||= "user"  # 初回ログイン時は必ずUserロールの割り当てになるため必要に応じてAdminアカウントから変更
+
+      user.save!
 
       # セッションにユーザーIDを保存（ログイン状態保持）
       session[:user_id] = user.id

@@ -1,77 +1,96 @@
-<h1 class="mb-4">Admin Dashboard</h1>
+<h1 class="mb-4 text-center">Admin Dashboard</h1>
 
-<div class="row">
-  <!-- 研修セクション -->
-  <div class="col-md-6 mb-4">
-    <div class="card shadow-sm">
+<!-- =========================
+     研修管理フロー（ステップ）
+     ========================= -->
+<div class="row text-center">
+
+  <!-- STEP 1 -->
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm border-primary">
       <div class="card-header bg-primary text-white">
-        研修（Training）
+        STEP 1：研修を作成
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <%= link_to "研修作成", new_admin_training_path, class: "btn btn-outline-success w-100 text-start" %>
-        </li>
-        <li class="list-group-item">
-          <%= link_to "研修セット", new_admin_training_schedule_path, class: "btn btn-outline-success w-100 text-start" %>
-        </li>
-        <li class="list-group-item">
-          <%= link_to "登録済み研修一覧", admin_trainings_path, class: "btn btn-outline-primary w-100 text-start" %>
-        </li>
-      </ul>
+      <div class="card-body">
+        <p class="text-muted">
+          まずは研修の内容を登録します
+        </p>
+
+        <%= link_to "研修作成",
+            new_admin_training_path,
+            class: "btn btn-primary w-100 mb-2" %>
+
+        <%= link_to "登録済み研修一覧",
+            admin_trainings_path,
+            class: "btn btn-outline-primary w-100" %>
+      </div>
     </div>
   </div>
 
-  <!-- プランセクション -->
-  <div class="col-md-6 mb-4">
-    <div class="card shadow-sm">
+  <!-- STEP 2 -->
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm border-success">
       <div class="card-header bg-success text-white">
-        プラン（Plan）
+        STEP 2：研修をセット
       </div>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <%= link_to "プラン作成", new_admin_plan_path, class: "btn btn-outline-success w-100 text-start" %>
-        </li>
-        <li class="list-group-item">
-          <%= link_to "プラン一覧", admin_plans_path, class: "btn btn-outline-primary w-100 text-start" %>
-        </li>
-      </ul>
+      <div class="card-body">
+        <p class="text-muted">
+          日程・会場・講師を設定します
+        </p>
+
+        <%= link_to "研修セット",
+            new_admin_training_schedule_path,
+            class: "btn btn-success w-100 mb-2" %>
+
+        <%= link_to "研修カレンダー",
+            admin_training_schedules_path,
+            class: "btn btn-outline-success w-100" %>
+      </div>
     </div>
   </div>
+
+  <!-- STEP 3 -->
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm border-info">
+      <div class="card-header bg-info text-white">
+        STEP 3：プランを作成
+      </div>
+      <div class="card-body">
+        <p class="text-muted">
+          研修をまとめてプログラム化します
+        </p>
+
+        <%= link_to "プラン作成",
+            new_admin_plan_path,
+            class: "btn btn-info w-100 mb-2" %>
+
+        <%= link_to "プラン一覧",
+            admin_plans_path,
+            class: "btn btn-outline-info w-100" %>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <hr>
 
+<!-- =========================
+     補助メニュー
+     ========================= -->
 <div class="mt-4 text-center d-flex justify-content-center gap-3 flex-wrap">
   <%= link_to "研修カレンダー",
       admin_training_schedules_path,
-      class: "btn btn-info btn-lg" %>
+      class: "btn btn-outline-info btn-lg" %>
 
   <% if current_user.admin? %>
     <%= link_to "ユーザー一覧（管理者用）",
         admin_users_list_index_path,
-        class: "btn btn-primary btn-lg" %>
+        class: "btn btn-outline-primary btn-lg" %>
   <% end %>
 </div>
 
+<!-- =========================
+     使い方説明
+     ========================= -->
 <%= render "how_to_use" %>
-
-#開発確認用
-<p>
-  ログイン中ユーザーID：
-  <%= current_user.id %>
-</p>
-
-<p>
-  ログインID（name）：
-  <%= current_user.name %>
-</p>
-
-<p>
-  表示名（real_name）：
-  <%= current_user.real_name.presence || "未設定" %>
-</p>
-
-<p>
-  ロール：
-  <%= current_user.role.presence || "未設定" %>
-</p>

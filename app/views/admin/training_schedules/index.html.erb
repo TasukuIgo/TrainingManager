@@ -2,14 +2,19 @@
   <%= stylesheet_link_tag "shared_index_button", "data-turbo-track": "reload" %>
 <% end %>
 
-
 <h1 class="mb-4">研修スケジュール</h1>
 
-<%= render 'shared/index_button' %>
+<div class="row">
+  <div class="col-12 order-1">
+    <%= render partial: "shared/calendar",
+               locals: {
+                 calendar_id: "calendar",
+                 schedules: @training_schedules,
+                 url_for_event: ->(s) { admin_training_schedule_path(s) }
+               } %>
+  </div>
 
-<%= render partial: "shared/calendar",
-           locals: {
-             calendar_id: "calendar",
-             schedules: @training_schedules,
-             url_for_event: ->(s) { admin_training_schedule_path(s) }
-           } %>
+  <div class="col-12 order-2 mt-4 text-center opacity-75">
+    <%= render 'shared/index_button' %>
+  </div>
+</div>

@@ -76,10 +76,12 @@
 
             <div class="btn-group btn-group-sm" role="group">
               <!-- ブラウザで開く -->
-              <%= link_to "開く", "/#{material.file_path}", target: "_blank", class: "btn btn-outline-primary" %>
+              <%= link_to material.original_filename,
+                  "/materials/#{@training.id}/#{material.original_filename}", target: "_blank", class: "btn btn-outline-primary" %>
 
               <!-- ダウンロード -->
-              <%= link_to "ダウンロード", "/#{material.file_path}", download: material.original_filename,
+              <%= link_to material.original_filename,
+                  "/materials/#{@training.id}/#{material.original_filename}", download: material.original_filename,
                           class: "btn btn-outline-success" %>
             </div>
           </li>
