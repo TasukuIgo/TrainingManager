@@ -93,7 +93,7 @@ class Admin::PlansController < ApplicationController
     @plan = Plan.find(params[:id]) # idで検索。見つからなければ例外
   end
 
-  # 許可されたパラメータのみ受け取る（セキュリティ対策）
+  # 許可されたパラメータのみ受け取る
   def plan_params
     params.require(:plan).permit(:name, :description, training_schedule_ids: [], user_ids: [])
   end

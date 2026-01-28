@@ -9,21 +9,21 @@ class Users::TrainingSchedulesController < ApplicationController
     # すべての研修スケジュール（研修情報込み）
     all_schedules = TrainingSchedule.includes(:training).order(start_time: :asc)
 
-    # --- プラン参加 ---
+    # プラン参加
     plan_ids = TrainingSchedule
                  .joins(plans: :plan_participations)        # Plan -> PlanParticipation を結合
                  .where(plan_participations: { user_id: current_user.id }) # 自分の参加
                  .distinct                                 # 重複を除く
                  .pluck(:id)                               # id だけ取り出す
 
-    # --- 研修参加 ---
+    # 研修参加
     training_ids = TrainingSchedule
                      .joins(:training_participations)      # TrainingParticipation を結合
                      .where(training_participations: { user_id: current_user.id })
                      .distinct
                      .pluck(:id)
 
-    # --- 講師担当 ---
+    # 講師担当
     instructor_ids = current_user.instructed_training_schedules.pluck(:id)
 
     # 各スケジュールに「役割」を付与

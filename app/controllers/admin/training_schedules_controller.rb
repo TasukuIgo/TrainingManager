@@ -14,7 +14,7 @@ class Admin::TrainingSchedulesController < ApplicationController
     # 研修スケジュールを研修情報込みで取得
     @training_schedules = TrainingSchedule.includes(:training).order(start_time: :asc)
 
-    # カレンダー用データ（ここではシンプルに :other としている）
+    # カレンダー用データ
     @calendar_schedules = @training_schedules.map do |schedule|
       [schedule, :other]
     end
@@ -36,7 +36,7 @@ class Admin::TrainingSchedulesController < ApplicationController
     @training_schedule = TrainingSchedule.new(training_schedule_params)
 
     if @training_schedule.save
-      # --- 講師登録 ---
+      # 講師登録
       if params[:training_schedule][:instructor_id].present?
         Instructor.create!(
           training_schedule: @training_schedule,
@@ -44,7 +44,7 @@ class Admin::TrainingSchedulesController < ApplicationController
         )
       end
 
-      # --- 参加者登録 ---
+      # 参加者登録
       if params[:training_schedule][:participant_ids].present?
         params[:training_schedule][:participant_ids]
           .reject(&:blank?) # 空欄を除く
@@ -79,7 +79,7 @@ class Admin::TrainingSchedulesController < ApplicationController
     @training_schedule = TrainingSchedule.find(params[:id])
 
     if @training_schedule.update(training_schedule_params)
-      # --- 講師の更新 ---
+      # 講師の更新
       @training_schedule.instructors.destroy_all # 既存講師を削除
       if params[:training_schedule][:instructor_id].present?
         Instructor.create!(
@@ -88,7 +88,7 @@ class Admin::TrainingSchedulesController < ApplicationController
         )
       end
 
-      # --- 参加者の更新 ---
+      # 参加者の更新
       @training_schedule.training_participations.destroy_all # 既存参加者を削除
       if params[:training_schedule][:participant_ids].present?
         params[:training_schedule][:participant_ids]
@@ -135,11 +135,11 @@ class Admin::TrainingSchedulesController < ApplicationController
     end_date   = params[:training_schedule].delete(:end_time_date)
     end_time   = params[:training_schedule].delete(:end_time_time)
 
-    # date + time を文字列結合して start_time, end_time にセット
+    # date+timeをstart_time, end_time にセット
     params[:training_schedule][:start_time] = "#{start_date} #{start_time}" if start_date && start_time
     params[:training_schedule][:end_time]   = "#{end_date} #{end_time}"     if end_date && end_time
 
-    # 許可されたパラメータだけ受け取る（セキュリティ対策）
+    # 許可されたパラメータだけ受け取る
     params.require(:training_schedule)
       .permit(
         :training_id,

@@ -7,18 +7,18 @@ class Users::PlansController < ApplicationController
     # すべての研修スケジュール（研修情報込み）
     all_schedules = TrainingSchedule.includes(:training).all
 
-    # --- Plan に参加している研修スケジュール ---
+    # Planに参加している研修スケジュール
     plan_schedules = TrainingSchedule
                       .joins(plans: :plan_participations)
                       .where(plan_participations: { user_id: current_user.id })
                       .distinct  # 重複を除く
 
-    # --- TrainingParticipation に参加している研修スケジュール ---
+    # TrainingParticipationに参加している研修スケジュール
     training_schedules = current_user.training_participations
                                      .map(&:training_schedule) # 配列に変換
                                      .uniq                      # 重複除去
 
-    # --- 講師担当の研修スケジュール ---
+    # 講師担当の研修スケジュール
     instructor_schedules = current_user.instructed_training_schedules
 
     # 各スケジュールに「自分の役割」を付与

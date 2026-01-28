@@ -11,9 +11,9 @@ class Admin::TrainingsController < ApplicationController
 
   # 作成処理
   def create
-    @training = Training.new(training_params) # materials は params から除く
+    @training = Training.new(training_params)
 
-    # --- 複数テーブルを同時に更新する場合は transaction でまとめる ---
+    # 複数テーブルを同時に更新する場合は transaction でまとめる
     ActiveRecord::Base.transaction do
       @training.save! # 保存できなければ例外
       save_materials(@training) if params[:training][:materials].present? # ファイル保存
@@ -85,12 +85,12 @@ class Admin::TrainingsController < ApplicationController
     @training = Training.find(params[:id]) # id で検索
   end
 
-  # 許可されたパラメータのみ受け取る（セキュリティ対策）
+  # 許可されたパラメータのみ受け取る
   def training_params
     params.require(:training).permit(:title, :description)
   end
 
-  # --- ファイル保存処理 ---
+  # ファイル保存処理
   def save_materials(training)
     return unless params[:training][:materials].present?
 
