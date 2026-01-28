@@ -31,7 +31,7 @@ class Admin::TrainingsController < ApplicationController
 
   # 一覧表示
   def index
-    @trainings = Training.order(created_at: :asc)
+    @trainings = Training.order(updated_at: :desc)
   end
 
   # 詳細表示
@@ -47,18 +47,22 @@ class Admin::TrainingsController < ApplicationController
   # 更新処理
   def update
     ActiveRecord::Base.transaction do
-      @training.update!(training_params) # 更新
-      save_materials(@training)          # 新規アップロード
+      @training.update!(training_params)
+      save_materials(@training)
 
-      # 削除フラグがあれば削除
       if params[:deleted_material_ids].present?
         params[:deleted_material_ids].each do |id|
           material = @training.materials.find(id)
-          file_path = Rails.root.join("public", "materials", @training.id.to_s, material.original_filename)
+          file_path = Rails.root.join(
+            "public", "materials", @training.id.to_s, material.original_filename
+          )
           File.delete(file_path) if File.exist?(file_path)
           material.destroy
         end
       end
+
+      # 研修に紐づく何か（資料など）が変わったら「研修が更新された」扱い
+      @training.touch
     end
 
     redirect_to admin_training_path(@training), notice: "研修を更新しました"
@@ -67,7 +71,6 @@ class Admin::TrainingsController < ApplicationController
     Rails.logger.error(e)
     render :edit, status: :unprocessable_entity
   end
-
 
   # 削除処理
   def destroy

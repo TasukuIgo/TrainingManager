@@ -1,24 +1,76 @@
-# README
+# Training Manager
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+研修管理を目的とした Rails アプリケーションです。
 
-Things you may want to cover:
+本アプリでは **研修内容 → 研修実施（スケジュール） → プラン** という業務上自然な流れで、社内研修を一元管理できます。
 
-* Ruby version
+---
 
-* System dependencies
+## アプリ概要
 
-* Configuration
+Training Manager は、以下の3階層で研修を管理します。
 
-* Database creation
+1. **研修（Training）**
+   研修そのものの内容を管理します。
 
-* Database initialization
+   * タイトル
+   * 説明文
+   * 研修資料（PDF など）
 
-* How to run the test suite
+2. **研修セット（Training Schedule）**
+   研修に「日時・会場・講師・参加者」を紐づけ、実施単位として管理します。
 
-* Services (job queues, cache servers, search engines, etc.)
+3. **プラン（Plan）**
+   複数の研修セットをまとめ、入社研修などの研修プログラムとして管理します。
 
-* Deployment instructions
+---
 
-* ...
+## 使い方（基本フロー）
+
+1. **研修を作成**
+   まず研修内容と資料（PDF）を登録します。
+
+2. **研修セットを作成**
+   作成した研修に、日程・会場・講師などを設定します。
+
+3. **プランを作成**
+   複数の研修セットをまとめてプラン化します。
+
+---
+
+## 設計方針
+
+* 研修（Training）をベースに設計しています。
+* 研修はタイトルと説明、資料のデータを含んでいます。
+* カレンダーでの日時設定や会場、講師の設定など肉付けしていくことを研修をセットすると定義し、
+　Training_scheduleとしています。
+* この１つ１つのTraining_scheduleをグループ化でき、名前をつけて保存でき、これをPlanと定義しています。
+　入社時研修など複数の研修を管理したい際に利用できます。
+
+
+---
+
+## 主な機能
+
+* 研修の CRUD
+* 研修資料（PDF）のアップロード／削除
+* 研修スケジュールのカレンダー表示
+* プラン管理
+* 管理者向けユーザー管理
+
+---
+
+## 技術スタック
+
+### バックエンド
+- Ruby on Rails
+
+### データベース
+- PostgreSQL
+
+### フロントエンド
+- Bootstrap
+
+### インフラ / 開発環境
+- Docker / Docker Compose
+- AWS EC2（本番環境）

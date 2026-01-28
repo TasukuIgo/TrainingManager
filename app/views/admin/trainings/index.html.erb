@@ -1,27 +1,55 @@
-<!-- app/views/admin/trainings/index.html.erb -->
+<!-- 画面タイトル -->
 <h1 class="mb-4">研修一覧</h1>
 
+<!-- 新規研修作成ボタン -->
 <div class="mb-3">
-  <%= link_to "＋ 新規研修作成", new_admin_training_path, class: "btn btn-primary" %>
+  <%= link_to "＋ 新規研修作成",
+              new_admin_training_path,
+              class: "btn btn-primary" %>
 </div>
 
+<!-- 一覧テーブル -->
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover align-middle">
+
+    <!-- テーブルの見出し -->
     <thead class="table-light">
       <tr>
-        <th>ID</th>
         <th>タイトル</th>
+        <th>説明</th>
         <th>作成日</th>
+        <th>更新日</th>
       </tr>
     </thead>
+
+    <!-- テーブルの中身 -->
     <tbody>
+      <!-- @trainings に入っている研修データを1件ずつ取り出す -->
       <% @trainings.each do |training| %>
         <tr>
-          <td><%= training.id %></td>
+
+          <!-- タイトル（クリックすると詳細画面へ） -->
           <td>
-            <%= link_to training.title, admin_training_path(training), class: "text-decoration-none" %>
+            <%= link_to training.title,
+                        admin_training_path(training),
+                        class: "text-decoration-none fw-semibold" %>
           </td>
-          <td><%= l training.created_at, format: "%Y/%m/%d %H:%M" %></td>
+
+          <!-- 説明文の冒頭40文字だけ表示 -->
+          <td>
+            <%= truncate(training.description, length: 20) %>
+          </td>
+
+          <!-- 作成日時 -->
+          <td>
+            <%= l training.created_at, format: "%Y/%m/%d %H:%M" %>
+          </td>
+
+          <!-- 更新日時 -->
+          <td>
+            <%= l training.updated_at, format: "%Y/%m/%d %H:%M" %>
+          </td>
+
         </tr>
       <% end %>
     </tbody>

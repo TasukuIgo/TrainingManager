@@ -11,30 +11,3 @@
 <div class="text-center my-4">
   <%= image_tag "rooms.png", alt: "部屋一覧", class: "img-thumbnail" %>
 </div>
-
-
-#開発確認用
-
-<p>
-  ログイン中ユーザーID：
-  <%= current_user.id %>
-</p>
-
-<p>外部主キー
-  <%= current_user.external_user_id %>
-</p>
-
-<p>
-  ログインID（name）：
-  <%= current_user.name %>
-</p>
-
-<p>
-  表示名（real_name）：
-  <%= current_user.real_name.presence || "未設定" %>
-</p>
-
-<p>
-  ロール：
-  <%= current_user.role.presence || "未設定" %>
-</p>
