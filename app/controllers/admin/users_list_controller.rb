@@ -31,7 +31,7 @@ module Admin
 
     private
 
-    # 許可されたパラメータだけ受け取る（セキュリティ対策）
+    # 許可されたパラメータだけ受け取る
     def user_params
       params.require(:user).permit(:role)
     end

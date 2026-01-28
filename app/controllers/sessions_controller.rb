@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
     require 'uri'
     require 'json'
 
-    # --- 環境変数から API の情報を取得 ---
+    # 環境変数からAPIの情報を取得
     api_endpoint = ENV.fetch("FD_API_ENDPOINT")
     api_key      = ENV.fetch("FD_API_KEY")
 
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
 
     # POST リクエスト作成
     req = Net::HTTP::Post.new(uri)
-    req["X-Api-Key"] = api_key            # APIキーをヘッダにセット
+    req["X-Api-Key"] = api_key            # APIキーをセット
     req["Content-Type"] = "application/json"
 
     # 送信する JSON データ
@@ -43,7 +43,8 @@ class SessionsController < ApplicationController
       user = User.find_or_initialize_by(external_user_id: user_data["id"])
       user.real_name = user_data["name"]
       user.name      = user_data["username"]
-      user.role ||= "user"  # 初回ログイン時は必ずUserロールの割り当てになるため必要に応じてAdminアカウントから変更
+      user.role ||= "user"  
+      # 初回ログイン時は必ずUserロールの割り当てになるため必要に応じてAdminアカウントから変更
 
       user.save!
 
@@ -55,7 +56,7 @@ class SessionsController < ApplicationController
       render :new, status: :unauthorized
     end
 
-  # API エラーやネットワークエラーを捕捉
+  # APIエラーやネットワークエラーを捕捉
   rescue StandardError => e
     Rails.logger.error("API ERROR: #{e.message}")
     flash.now[:alert] = "API接続に失敗しました"
