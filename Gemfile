@@ -59,7 +59,7 @@ group :development do
   gem "web-console"
 end
 
-gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.22'
 
 gem 'pry-rails'
 
